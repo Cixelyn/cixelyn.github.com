@@ -1,0 +1,943 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Notes from cory.li</title>
+  <subtitle>Recent Blog Posts</subtitle>
+  <id>http://cory.li/feed.xml</id>
+  <link href="http://cory.li"/>
+  <link href="http://cory.li/feed.xml" rel="self"/>
+  <updated>2016-05-11T19:00:00-04:00</updated>
+  <author>
+    <name>Cory Li</name>
+  </author>
+  <entry>
+    <title>Keyboard Science with Cherry MLs</title>
+    <link rel="alternate" href="/cherry-ml/"/>
+    <id>/cherry-ml/</id>
+    <published>2016-05-11T19:00:00-04:00</published>
+    <updated>2016-05-11T19:00:00-04:00</updated>
+    <author>
+      <name>Cory Li</name>
+    </author>
+    <summary type="html">&lt;p&gt;I was recently inspired by a post / rallying call to “&lt;a href="http://coffeecoder.net/blog/blog-little-things/"&gt;blog little things&lt;/a&gt;.” So after failing to find detailed information on the Cherry ML pushbutton switch, I’ve decided to publish all my measurement notes in the hopes that it will be helpful to someone...&lt;/p&gt;</summary>
+    <content type="html">&lt;p&gt;I was recently inspired by a post / rallying call to &amp;ldquo;&lt;a href="http://coffeecoder.net/blog/blog-little-things/"&gt;blog little things&lt;/a&gt;.&amp;rdquo; So after failing to find detailed information on the Cherry ML pushbutton switch, I&amp;rsquo;ve decided to publish all my measurement notes in the hopes that it will be helpful to someone else.&lt;/p&gt;
+
+&lt;h2 id="the-switch"&gt;The Switch&lt;/h2&gt;
+
+&lt;p&gt;With mechanical keyboards being all the rage, most enthusiasts are familiar with the &lt;a href="http://cherryamericas.com/product/mx-series/"&gt;Cherry MX series&lt;/a&gt; of pushbutton switches. Less known, however, is &lt;a href="http://cherryamericas.com/product/ml-series/"&gt;Cherry&amp;rsquo;s ML series&lt;/a&gt; of low-profile switches, meant for laptops or other space-constrained designs. At 6.9mm total board height, it&amp;rsquo;s less than half the height of a 15.6mm MX switch.&lt;/p&gt;
+
+&lt;p&gt;&lt;img class="img-polaroid" alt="Cherry MX and ML side-by-side" src="comparison.jpg" /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Travel Distance&lt;/strong&gt;: 3mm&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Force&lt;/strong&gt;: 45 cN&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Bounce Time&lt;/strong&gt;: 5ms&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Current Rating&lt;/strong&gt;: 10mA&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The ML switch is technically a &amp;ldquo;family&amp;rdquo; of switches, but there&amp;rsquo;s really only one ML part readily available, the ML1A-11JW. Fortunately, this variant is &lt;a href="https://octopart.com/ml1a-11jw-cherry-916514"&gt;widely available in single quantities&lt;/a&gt;, making it decent for hobbyist use.&lt;/p&gt;
+
+&lt;p&gt;The best description I&amp;rsquo;ve heard for the tactile &amp;ldquo;feel&amp;rdquo; of an ML switch is that it&amp;rsquo;s like a Cherry MX Blue, but &amp;ldquo;scratchier.&amp;rdquo; While preference for a particular switch is mostly dependent on the eye of the beholder, I think these switches feel great in my application: a fully mechanical controller (if you&amp;rsquo;re interested, follow me on &lt;a href="https://twitter.com/cixelyn"&gt;twitter&lt;/a&gt; for updates!)&lt;/p&gt;
+
+&lt;p&gt;Unfortunately, Cherry&amp;rsquo;s &lt;a href="http://cherryamericas.com/wp-content/uploads/2014/12/ml_cat.pdf"&gt;official datasheets&lt;/a&gt; are frustratingly bare and underannotated, especially in regards to mechanical features, which makes it difficult to use in designs. I will try to elucidate some of the missing information below.&lt;/p&gt;
+
+&lt;h2 id="schematic"&gt;Schematic&lt;/h2&gt;
+
+&lt;p&gt;&lt;img alt="Cherry ML Footprint" src="/cherry-ml/footprint.svg" /&gt;&lt;/p&gt;
+
+&lt;p&gt;The J in the part number stands for &lt;strong&gt;J&lt;/strong&gt;umper, meaning that two of the pins are just shorts to each other. However, it isn&amp;rsquo;t clear on exactly which ones they are out of the four. I&amp;rsquo;ve redrawn the footprint with an actual schematic symbol to make it clear that pins 2 and 4 are the actual switch, while 1 and 3 serve as a jumper wire.&lt;/p&gt;
+
+&lt;h2 id="mechanical-dimensions"&gt;Mechanical Dimensions&lt;/h2&gt;
+
+&lt;p&gt;&lt;img alt="Cherry ML mechanical drawing/dimensions" src="/cherry-ml/drawing.svg" /&gt;&lt;/p&gt;
+
+&lt;p&gt;While the MX series has the mounting post on the switch, the ML switch instead has slots that the keycaps insert into. The exact dimensions and spacing of the hole are unclear, so I have filled them out here. These are the dimensions to the best of my knowledge (and the tolerance of my calipers).&lt;/p&gt;
+
+&lt;p&gt;The actuator is directly centered over the bottom mounting post, with two 3.1mm x 1.1mm slots separated 5.3mm apart. It is important to note that the large bottom mounting post is &lt;em&gt;not&lt;/em&gt; in the center of the switch; it&amp;rsquo;s only 5mm down the edge of the full 11.4mm length. I&amp;rsquo;ve exported a very blocky &lt;a href="/cherry-ml/ML1A-11JWv1.step"&gt;3D STEP file&lt;/a&gt; out for visualization use while working in your favorite EDA package.&lt;/p&gt;
+
+&lt;h2 id="keycap-test"&gt;Keycap Test&lt;/h2&gt;
+
+&lt;p&gt;To check my measurements, I designed a small button cap with 3 x 1mm mounting posts as a test.&lt;/p&gt;
+
+&lt;p&gt;&lt;img alt="Cherry ML round button keycap design" src="/cherry-ml/keycap.svg" /&gt;&lt;/p&gt;
+
+&lt;p&gt;The button yielded a reasonable fit after printing it out on an SLA 3D-printer. &lt;/p&gt;
+
+&lt;p&gt;&lt;img class="img-polaroid" alt="Cherry ML with 3D printed keycap" src="keycap-off.jpg" /&gt;&lt;/p&gt;
+
+&lt;p&gt;It may be possible to increase the size of the mounting post a bit to make the fit tighter, but so far I&amp;rsquo;m pretty happy with how it turned out.&lt;/p&gt;
+
+&lt;p&gt;&lt;img class="img-polaroid" alt="Cherry ML with 3D printed keycap" src="keycap-on.jpg" /&gt;&lt;/p&gt;
+
+&lt;h2 id="final-thoughts"&gt;Final Thoughts&lt;/h2&gt;
+
+&lt;p&gt;I&amp;rsquo;ll try to make this a &amp;ldquo;living&amp;rdquo; blog post in that I&amp;rsquo;ll periodically update it with more accurate measurements and models as I make them &amp;ndash; feel free to check back for the latest information. At some point I plan to take the keycap apart and optically scan and measure each piece, but for now the above is sufficient for my purposes.&lt;/p&gt;
+
+&lt;p&gt;Also, if there&amp;rsquo;s anyone out there with better measurements or models, please feel free to reach out to me either through &lt;a href="https://twitter.com/cixelyn"&gt;twitter&lt;/a&gt; or &lt;a href="mailto:s@cory.li"&gt;email&lt;/a&gt; so I can correct my drawings!&lt;/p&gt;
+
+&lt;h2 id="changelog"&gt;Changelog&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;5/11/2016&lt;/strong&gt;: Initial Posting&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+  </entry>
+  <entry>
+    <title>Fun with solving puzzles (and dragons)</title>
+    <link rel="alternate" href="/puzzle-and-dragons/"/>
+    <id>/puzzle-and-dragons/</id>
+    <published>2016-03-26T18:00:00-04:00</published>
+    <updated>2016-03-26T18:00:00-04:00</updated>
+    <author>
+      <name>Cory Li</name>
+    </author>
+    <summary type="html">&lt;p&gt;From the end of 2012 to early 2014, I found myself enchanted (read: entrapped) by the mobile game known as Puzzles and Dragons.  A deceptively simple and charming game, this post is a collection of my musings on the gameplay and design. It’s also some...&lt;/p&gt;</summary>
+    <content type="html">&lt;p&gt;From the end of 2012 to early 2014, I found myself enchanted (read: entrapped) by the mobile game known as Puzzles and Dragons.  A deceptively simple and charming game, this post is a collection of my musings on the gameplay and design. It&amp;rsquo;s also some closure for myself so that I can finally say that I have &amp;ldquo;beaten&amp;rdquo; the game and put it to rest.&lt;/p&gt;
+
+&lt;p&gt;Anyways, there are really four separate posts contained within this mind dump, feel free to skip to the parts of interest to you:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;a href="#core-gameplay"&gt;Introduction to PAD and gameplay overview&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#solvable-gameplay"&gt;Some PAD maths and algorithms&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#complete-computer-control"&gt;PAD hacking/automation&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#design-thoughts"&gt;Thoughts on PAD&amp;rsquo;s game design&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id="core-gameplay"&gt;Core Gameplay&lt;/h2&gt;
+
+&lt;p&gt;Puzzles and Dragon (or PAD for short) is a match-three puzzler from the Japanese studio GungHo entertainment. Featuring Pokemon-like collection and progression elements, it ranks among one of the most profitable apps in the world. It still pulls in around &lt;a href="http://venturebeat.com/2013/05/13/puzzle-dragons-is-making-3-75m-a-day/"&gt;3 million dollars &lt;em&gt;daily&lt;/em&gt;&lt;/a&gt; and was the first mobile app ever to hit &lt;a href="http://www.pocketgamer.biz/asia/news/57076/its-official-puzzle-and-dragons-is-the-first-mobile-game-to-1-billion-in-revenue/"&gt;$1 billion dollars in revenue&lt;/a&gt;.&lt;sup id="fnref1"&gt;&lt;a href="#fn1"&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+
+&lt;p&gt;The goal of the game is very simple: Eliminate 3 or more orbs in a row.&lt;/p&gt;
+
+&lt;video autoplay loop muted style="max-width:350px;" &gt;
+  &lt;source src="overview.mp4" type="video/mp4"&gt;
+  &lt;source src="overview.webm" type="video/webm"&gt;
+  Your browser doesn&amp;rsquo;t support HTML5 video tag.
+&lt;/video&gt;
+
+&lt;p&gt;Matched combos on the bottom half of the game board build attack power which you use to launch attacks against cute enemy monsters shown on the top half.&lt;/p&gt;
+
+&lt;p&gt;But notice that there is a subtle difference in game design which sets PAD apart from other match-threes, like Candy Crush or Bejeweled. Instead of your typical swap-two-elements, a single piece in PAD can be moved an arbitrary length, displacing other pieces as it travels.&lt;/p&gt;
+
+&lt;p&gt;The ingenuity in this design is that it&amp;rsquo;s actually a strict &lt;em&gt;superset&lt;/em&gt; of Bejeweled&amp;rsquo;s gameplay. It makes the game incredibly beginner-friendly, since you can still play in a very simplistic swap-two manner:&lt;/p&gt;
+
+&lt;video autoplay loop muted style="max-width:400px" &gt;
+  &lt;source src="simple.mp4" type="video/mp4"&gt;
+  &lt;source src="simple.webm" type="video/webm"&gt;
+  Your browser doesn&amp;rsquo;t support HTML5 video tag.
+&lt;/video&gt;
+
+&lt;p&gt;But the more you play, the more it becomes clear that the skill ceiling is actually incredibly high, as the player learns to massage the board into their desired configuration with lengthy combos:&lt;/p&gt;
+
+&lt;video autoplay loop muted style="max-width:400px" &gt;
+  &lt;source src="combo.mp4" type="video/mp4"&gt;
+  &lt;source src="combo.webm" type="video/webm"&gt;
+  Your browser doesn&amp;rsquo;t support HTML5 video tag.
+&lt;/video&gt;
+
+&lt;p&gt;With this simple core mechanic, PAD is able to create one of the best gameplay skill-progression tracks I have seen in any mobile game. Without the need for preprogrammed experience bars or player buff handouts, there is still an invisible but very prominent feeling of &amp;ldquo;leveling-up&amp;rdquo;. The player gains new advanced techniques, combo setups, and become more dexterous at manipulating the orbs all on their own.&lt;/p&gt;
+
+&lt;p&gt;And most impressive of all, this invisible progress track guides the player all the way from being a casual bejeweled player to tackling PAD&amp;rsquo;s version of ruthless World of Warcraft-like endgame raiding.&lt;/p&gt;
+
+&lt;p&gt;As an example, study the following hypothetical 4x3 board:&lt;/p&gt;
+
+&lt;p&gt;&lt;img class="img-polaroid" title="Ta-da!" alt="hypothetic four-color 4x3 board" width="400px" src="cutout.png" /&gt;&lt;/p&gt;
+
+&lt;p&gt;A beginner might go for one of the two easy double-combos:&lt;/p&gt;
+
+&lt;p&gt;&lt;img class="img-polaroid" title="And similarly for the left side" alt="Path for a single combo on the right side" width="400px" src="cutout-path1.png" /&gt;&lt;/p&gt;
+
+&lt;p&gt;A more experienced player should immediately see the path for the full four vertical combo:&lt;/p&gt;
+
+&lt;p&gt;&lt;img class="img-polaroid" title="Magic!" alt="Path for four vertical combos" width="400px" src="cutout-path2.png" /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href="http://pad.dawnglare.com/?s=iahWBP0"&gt;Try it for yourself&lt;/a&gt; if you&amp;rsquo;re having trouble understanding the path. And of course these pattern identifications are much more impressive when in context of the full 5x6 board.&lt;/p&gt;
+
+&lt;p&gt;&lt;img class="img-polaroid" title="Do the above moves and you still have an easy purple and blue setup too. Hearts for the extra ambitious." alt="Path for double combo" width="400px" src="cutout-full.png" /&gt;&lt;/p&gt;
+
+&lt;p&gt;This incredibly high skill ceiling actually makes PAD quite entertaining to watch, as skill is so visibly demonstrable. If you don&amp;rsquo;t believe me, check out one of my favorite &lt;a href="https://www.youtube.com/watch?v=ESkW2D_1nrk"&gt;PAD videos&lt;/a&gt;, or even watch some of the official &lt;a href="https://youtu.be/347dVAcjA9A?t=2160"&gt;AppBank streams&lt;/a&gt;. A spectator may mentally plan out her own solution, only to be enlightened when a master player steps up to move the orbs. To the untrained eye, it look as if orbs are being magically expelled from the board under a ruthless finger with machine-like precision&lt;sup id="fnref2"&gt;&lt;a href="#fn2"&gt;2&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
+
+&lt;h2 id="solvable-gameplay"&gt;Solvable Gameplay&lt;/h2&gt;
+
+&lt;p&gt;So after one dropped orb too many, it occured to me that I should just program the computer to play PAD for me.&lt;/p&gt;
+
+&lt;p&gt;The way orb manipulation works makes it very similar to the classic &lt;a href="https://en.wikipedia.org/wiki/15_puzzle"&gt;15-puzzle&lt;/a&gt;, in which you slide around numbered tiles in a grid to rearrange them into numerical order.&lt;/p&gt;
+
+&lt;p&gt;&lt;img title="These things were designed to shut me up as a little kid during long road trips" alt="15 Puzzle" src="/puzzle-and-dragons/15-puzzle.svg" /&gt;&lt;/p&gt;
+
+&lt;p&gt;Roughly speaking, PAD is an MxN generalization of 15-Puzzle. The only difference is that in PAD there is no explicit &amp;ldquo;hole,&amp;rdquo; the hole is instead the tile that you are currently dragging under your finger.&lt;/p&gt;
+
+&lt;p&gt;Using this as a bit of scaffolding, we can break the plan of attack for &amp;ldquo;solving&amp;rdquo; PAD into 2 parts: calculate the board with the maximal score, and then calculate the shortest path to get from our current state to our desired state.&lt;/p&gt;
+
+&lt;p&gt;An easy way to produce the maximal scoring board is to sort all the orbs by color, and then pack groups of three starting from the bottom&lt;sup id="fnref3"&gt;&lt;a href="#fn3"&gt;3&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img class="img-polaroid" title="Fortunately for us, this isn't the full bin packing problem" alt="Packing groups of three starting from the bottom" width="400px" src="packing.png" /&gt;&lt;/p&gt;
+
+&lt;p&gt;With some handwaving, you can show you can do no better than this configuration (i.e. breaking up a group to produce a falling combo does not increase your total combo count, so there is no advantage to not packing tight adjacent groups of threes). Note of course that this doesn&amp;rsquo;t take into account the mechanic of &lt;em&gt;skyfalls&lt;/em&gt;, that is, the additional combos scored serendiptiously from orbs refilling the board. To maximize this, you&amp;rsquo;ll want to simultaniously pack in the largest number of &lt;em&gt;cascades&lt;/em&gt;.  &lt;/p&gt;
+
+&lt;p&gt;&lt;img class="img-polaroid" title="Unfortunately for us, packing in this style is a bit harder. This example has a total of 4 cascades." alt="Packing cascades starting from the bottom" width="400px" src="cascades.png" /&gt;&lt;/p&gt;
+
+&lt;p&gt;Because the game refills orbs from the top each time it clears away a matched combo, having this &lt;em&gt;cascade&lt;/em&gt; of combos means that the falling orbs are permuted several times on the way down for a statistically higher chance of matches.&lt;/p&gt;
+
+&lt;p&gt;A tricky question is whether we can actually get to this desired configuration. Going back to our scaffolding, consider the fact that in 15-puzzle not every board state is actually reachable! There&amp;rsquo;s a neat little theorem showing that any move in 15-puzzle preserves the parity of inversions&lt;sup id="fnref4"&gt;&lt;a href="#fn4"&gt;4&lt;/a&gt;&lt;/sup&gt; &amp;ndash; that is, the number of times a higher-numbered tile precedes a lower-numbered tile. This fact partitions the space of possible board states into two disconnected graphs: those of even parity and those of odd parity. From any board, you can reach every other board of the same parity, but never one of the other parity! This is why if you physically pull out and swap two consecutive pieces on a 15-puzzle board, the puzzle is no longer solvable.&lt;/p&gt;
+
+&lt;p&gt;Unlike 15-puzzle where there are 15 unique pieces however, there are only 7 unique orb colors in PAD (if you also count poison as a color). Every board therefore must have a duplicate orb somewhere, and the existence of that duplicate means you can always swap the two duplicates to &amp;ldquo;change&amp;rdquo; the parity without actually changing the state of the board. Therefore, we can show that in PAD, &lt;em&gt;it is possible to achieve any desired board state&lt;/em&gt; &amp;ndash; the only limitation is your skill (and time to manipulate the orbs).&lt;/p&gt;
+
+&lt;p&gt;So, given that we know the reachable maximal-scoring board, we just need to write a solver to get there!&lt;/p&gt;
+
+&lt;p&gt;Turns out this is somewhat challenging, as finding the shortest solution for 15-puzzle is NP-hard. Likewise, while figuring out the highest scoring board in PAD is reasonably easy, finding the shortest path to achieve the highest-scoring board in the alloted time is non-trivial. &lt;/p&gt;
+
+&lt;p&gt;Fortunately for us, we can really only do so many moves in the alloted four seconds, so a non-exhaustive depth-first search is &amp;ldquo;good enough&amp;rdquo; for all intents and purposes. &lt;a href="http://kennytm.github.io/pndopt/pndopt.html"&gt;Pndopt&lt;/a&gt; is one such app&lt;sup id="fnref5"&gt;&lt;a href="#fn5"&gt;5&lt;/a&gt;&lt;/sup&gt;, which lets you weight certain colors for any given situation. Like a lot of F2P games these days, the game time-gates you on the number of plays you can do in a day, so for players who are running hard dungeons, it is not unusual to input every move through pndopt to maximize chances of success &amp;ndash; something of which I am quite guilty.&lt;/p&gt;
+
+&lt;p&gt;To PAD&amp;rsquo;s credit, using a computer to solve the puzzles surprisingly doesn&amp;rsquo;t ruin everything &amp;ndash; it just removes the puzzler cornerstone and transforms the game into more of a RPG team management simulation. &lt;/p&gt;
+
+&lt;h2 id="complete-computer-control"&gt;Complete Computer Control&lt;/h2&gt;
+
+&lt;p&gt;Given that most people are using computer solvers, why not just have the computer play the game entirely? Back when I was still &lt;del&gt;addicted&lt;/del&gt; playing, I hacked up a &lt;a href="https://github.com/Cixelyn/pndsolver"&gt;proof of concept solver &amp;amp; runner&lt;/a&gt; and threw it up on github just for myself. &lt;/p&gt;
+
+&lt;p&gt;&lt;img class="img-polaroid" title="This is where I developed my love/hate relationship with angular.js" alt="pndsolver web interface" src="pndsolver.png" /&gt;&lt;/p&gt;
+
+&lt;p&gt;Here&amp;rsquo;s how it all works:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt; Screen capture is accomplished with &lt;code&gt;idevicescreenshot&lt;/code&gt; on iOS and &lt;code&gt;adb screencap&lt;/code&gt; on android.&lt;/li&gt;
+&lt;li&gt;Once the image is on the computer, the location of the 6x5 grid is calculated from the screenshot aspect ratio and then divided into 30 individual images.&lt;/li&gt;
+&lt;li&gt;The average hue of the individual image determines the color.&lt;/li&gt;
+&lt;li&gt;SIFT is run against a grayscale version of the image to give a list of key points, which is then matched against a list of possible orb modifiers (e.g. the plus modifiers, which give a 1.05x bonus to matches)&lt;/li&gt;
+&lt;li&gt;Candidate combo paths are obtained via an extremely lazy DFS written in python, which runs a &amp;ldquo;multicore&amp;rdquo; solver by spawning a bunch of &lt;code&gt;pypy&lt;/code&gt; instances for different regions of the board.&lt;/li&gt;
+&lt;li&gt;Solutions with a score above a certain threshold are presented to the user along with the required path. The user can then sort through the solutions by relevant parameters such as damage done or health healed.&lt;/li&gt;
+&lt;li&gt;On android only, the chosen path can then be executed on the device via android&amp;rsquo;s &lt;code&gt;monkeyrunner&lt;/code&gt; tool. (I wasn&amp;rsquo;t able to figure out a way to programmatically simulate touches on iOS).&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id="straight-up-cheating"&gt;Straight Up Cheating&lt;/h3&gt;
+
+&lt;p&gt;Of course, this is an absurd amount of work just to play a game that is entirely client-side. Turns out PAD mothership doesn&amp;rsquo;t even care about the state of the game. Sniffing the traffic shows that there are only a total of three requests made per dungeon:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;sneak_dungeon&lt;/code&gt; - Client makes this request in order to enter a dungeon. Server responds with dungeon encounters and loot table in response.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;sneak_dungeon_ack&lt;/code&gt; - Client responds that the dungeon layout has been received and that the player is now playing. This is done in case of connectivity issues.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;clear_dungeon&lt;/code&gt; - Client responds that the dungeon is cleared. Server acknowledges, confirms the received loot, and updates the player&amp;rsquo;s account.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Note that what most people could call the &amp;ldquo;core game&amp;rdquo; is actually &lt;em&gt;entirely clientside&lt;/em&gt;. This includes the board state, monster attacks, monster damage, player health, etc. The entirety of the player&amp;rsquo;s efforts is boiled down to either a single http request &amp;ndash; a success request nets them the entire loot table, while a failure request leaves them with nothing.&lt;/p&gt;
+
+&lt;p&gt;One nice/convenient aspect of this design is that you can actually &amp;ldquo;queue&amp;rdquo; dungeons before losing connectivity. I&amp;rsquo;d often load a dungeon before entering the subway, play through it during my 10 minute commute downtown, then re-sync once I surfaced at the destination station.&lt;/p&gt;
+
+&lt;p&gt;Some other fun notes from packet sniffing:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;PAD to me is the best testament of the &amp;ldquo;just ship it&amp;rdquo; mentality as it appears the whole thing was written in PHP (i.e. the request is made to &lt;code&gt;sneak_dungeon.php&lt;/code&gt;), showing that a fancy stack isn&amp;rsquo;t necessary to build a billion dollar game.&lt;/li&gt;
+&lt;li&gt;The API endpoint to enter the dungeon &lt;code&gt;sneak_dungeon&lt;/code&gt; is probably an amusing mistranslation of sorts - probably originally along the lines of &amp;ldquo;to enter the dungeon discretely / carefully&amp;rdquo;&lt;/li&gt;
+&lt;li&gt;Somewhere around the 5.X series patches, they started encrypting the JSON payload so that it wasn&amp;rsquo;t easily over-the-wire sniff-able. Clever players were checking the loot-table ahead of time to determine whether a dungeon was even worth running. It&amp;rsquo;s now sent as a encoded binary base64 blob &amp;ndash; seems like a fun and reasonably straight-forward reverse engineering project for someone&amp;rsquo;s weekend.&lt;/li&gt;
+&lt;li&gt;Monsters are actually referred to as &lt;code&gt;cards&lt;/code&gt; in all the API calls. Maybe early prototypes of the games were meant to feel more like a collectible-card game?&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id="design-thoughts"&gt;Design Thoughts&lt;/h2&gt;
+
+&lt;p&gt;If you&amp;rsquo;re willing to ignore how easy it is to cheat and just play the game as it&amp;rsquo;s meant to be played, it&amp;rsquo;s actually quite an enjoyable experience. There are a lot of minor annoyances in PAD, but I think that they designed two high-level mechanics down quite well:&lt;/p&gt;
+
+&lt;h3 id="resource-management"&gt;Resource Management&lt;/h3&gt;
+
+&lt;p&gt;I&amp;rsquo;m not sure if the monster fusion mechanic was invented by PAD, but I find it to be a very clever bit of design. The basic gist is this: monsters are the primary form of &amp;ldquo;currency&amp;rdquo; in PAD.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;You use teams of monsters to clear dungeons&lt;/li&gt;
+&lt;li&gt;Clearing dungeons sometimes rewards you with additional monsters&lt;/li&gt;
+&lt;li&gt;Excess monsters can be used as a source of experience points for other monsters by &amp;ldquo;feeding&amp;rdquo; them&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Often, you&amp;rsquo;ll want to save the strongest monsters or put them on your team while feeding the weaker ones away. When feeding, feeding five fodder monsters at a time is slightly more efficient than feeding one at a time. So overall, the player is encouraged to hoard monsters.&lt;/p&gt;
+
+&lt;p&gt;Even getting duplicate monsters is exciting as fusing duplicates together not only provides experience, but also levels up the monster&amp;rsquo;s powerful &amp;ldquo;active skill&amp;rdquo;.&lt;sup id="fnref6"&gt;&lt;a href="#fn6"&gt;6&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+
+&lt;p&gt;Countering the natural hoarding tendency is the concept of &amp;ldquo;Box Space,&amp;rdquo; or the total number of monsters you&amp;rsquo;re allowed to hoard at a time. Exceeding the allocated box space prevents the player from being able to enter new dungeons, forcing them to make decisions about consolidating powerful creatures together, &lt;em&gt;or&lt;/em&gt; spending IAP purchases on box space expansions.&lt;/p&gt;
+
+&lt;p&gt;I find this single monster resource system to be quite elegant&lt;sup id="fnref7"&gt;&lt;a href="#fn7"&gt;7&lt;/a&gt;&lt;/sup&gt;, as it both simplifies the number of resources in the game, but also provides interesting decisions that players can think about in the downtime between dungeons: given a limited amount of box space, which monsters should I keep, and which ones should I feed away for experience?&lt;/p&gt;
+
+&lt;h3 id="raiding"&gt;Raiding&lt;/h3&gt;
+
+&lt;p&gt;Another mechanic I really like a lot is PAD&amp;rsquo;s treatment of the end-game.&lt;/p&gt;
+
+&lt;p&gt;The designers were either really clever, or got really lucky, in their design of the limited-time event system. In the game, there is a list of unique &amp;ldquo;special dungeons&amp;rdquo; called &amp;ldquo;descends&amp;rdquo; which rotates every 24 hours. Each special dungeon guarantees the drop of a unique monster only if you are able to clear it on the hardest difficulty. &lt;em&gt;However&lt;/em&gt;, specific special dungeons only come around about once a month. So if you want a particular monster, you have to train your team and plan to be ready by the dungeon date.&lt;/p&gt;
+
+&lt;p&gt;The whole preparation and timing feels very much like &amp;ldquo;gearing up&amp;rdquo; for a raid, as is common in other MMOs. Players will often only have two to three shots at the dungeon due to the time-gating, so they will often spend the days leading up to the descend training their monsters, reading up on the boss mechanics, and browsing the community to find friends with monsters who can help tackle the level&lt;sup id="fnref8"&gt;&lt;a href="#fn8"&gt;8&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
+
+&lt;p&gt;Due to the power spike granted by the newly acquired monsters from beating the descend, there&amp;rsquo;s also a natural progress of descends, just as there is often a natural raiding progression in MMOs. Often, the first real descend new players tackle is &lt;a href="http://puzzledragonx.com/en/mission.asp?m=810"&gt;Hera&lt;/a&gt;,&lt;sup id="fnref9"&gt;&lt;a href="#fn9"&gt;9&lt;/a&gt;&lt;/sup&gt; which provides an ability called Gravity, dealing an unconditional 30% damage to enemy monsters. Using Hera, they work their way through harder and harder stages, like Valkyrie, Goemon, eventually building a team that can tackle Zeus, Satan, and the other end-game descends.&lt;/p&gt;
+
+&lt;p&gt;This feeling of end-game progression complements the skill progression well, making me unsurprised that the game is still doing well after four years.&lt;/p&gt;
+
+&lt;h2 id="closing"&gt;Closing&lt;/h2&gt;
+
+&lt;p&gt;Anyways with over 500 days logged into the game, I think it&amp;rsquo;s time to put this to rest. Here&amp;rsquo;s a screenshot of my core team. &lt;/p&gt;
+
+&lt;p&gt;&lt;a href="team.png"&gt;&lt;img title="800 box space later..." alt="Cory's PAD Team" src="team_small.png" style="max-width:320px" /&gt;&lt;/a&gt;
+&lt;a href="karin.png"&gt;&lt;img title="I'll miss you Karin!" alt="Karin Seiryuu" src="karin_small.png" style="max-width:320px" /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Farewell Karin!&lt;/p&gt;
+
+&lt;p&gt;&lt;img alt="Uninstalling..." src="uninstall.png" style="max-width:100px" /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;I recently started using twitter more, feel free to follow me &lt;a href="http://twitter.com/cixelyn"&gt;@cixelyn&lt;/a&gt; if you enjoy my writing. Also, special thanks to Ruwen Liu, Haitao Mao, Sam Powers, and YP Chen for reading drafts of this post.&lt;/em&gt;&lt;/p&gt;
+
+&lt;div class="footnotes"&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+
+&lt;li id="fn1"&gt;
+&lt;p&gt;And as a self-congratulatory note, I am proud to say that I managed to spend less than $100 on IAP, making this one of the best time/money sources of entertainment I have ever played. Pyrrhic victory I suppose.&amp;nbsp;&lt;a href="#fnref1"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+
+&lt;li id="fn2"&gt;
+&lt;p&gt;To be completely fair, there is a part of PAD that can be quite inscrutable to uninitiated viewers: intentional board stalling. The idea is that the player does not actually want to trigger a big combo because it would prematurely advance them to the next part of the level before all their special abilities are charged. So they make a calculated (and often short) move that makes only a single match, while still manipulating the overall board layout to trigger a big combo later.&amp;nbsp;&lt;a href="#fnref2"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+
+&lt;li id="fn3"&gt;
+&lt;p&gt;This is of course for the very basic case where you have a rainbow colored team which each member of equal power. The analysis is much more nuanced if you care about a non-uniform team (i.e. you&amp;rsquo;re stuck with an integer linear programming problem). For those that care, the basic damage formula is &lt;span&gt;$$ (1+\frac{combos-1}{4}) \cdot \sum_{n=0}^{combos} \mathrm{attack}(n)\cdot(1 +\frac{orbs(n)-3}{4}) $$&lt;/span&gt;where combos is the total number of combos, attack(n) is the total monster attack power of combo&lt;sub&gt;n&lt;/sub&gt;, and orbs(n) is the total number of orbs in combo&lt;sub&gt;n&lt;/sub&gt;. Throw in board modifiers, monster multipliers, and a whole host of other powerups, and the calculation becomes really messy.&amp;nbsp;&lt;a href="#fnref3"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+
+&lt;li id="fn4"&gt;
+&lt;p&gt;For the general MxN puzzle, any transposition will preserve the invariant N mod 2, where N is the number of inversions plus the row number of the empty square. For a more thorough treatment, see the excellent resource at &lt;a href="http://www.cut-the-knot.org/pythagoras/fifteen.shtml"&gt;Interactive Mathematics Miscellany and Puzzles&lt;/a&gt;.&amp;nbsp;&lt;a href="#fnref4"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+
+&lt;li id="fn5"&gt;
+&lt;p&gt;If you do use Pndopt, I find their default &lt;code&gt;MAX_SOLUTIONS_COUNT&lt;/code&gt; a bit too low. Open the console and bump the variable to something reasonable like 20,000.&amp;nbsp;&lt;a href="#fnref5"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+
+&lt;li id="fn6"&gt;
+&lt;p&gt;Each monster may have up to one &lt;em&gt;active skill&lt;/em&gt;, which is a player-activated ability that provides some sort of positive benefit during battles. &amp;ldquo;Orb Changers&amp;rdquo; are the most sought-after active skill as they typically convert all orbs of one color to another, serving as play-makers for difficult board situations. Leveling up a skill reduces the skill&amp;rsquo;s cooldown timer, allowing the player to use it more frequently in battle.&amp;nbsp;&lt;a href="#fnref6"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+
+&lt;li id="fn7"&gt;
+&lt;p&gt;To be completely fair, PAD actually has a secondary resource called &amp;ldquo;gold&amp;rdquo; which I find quite inelegant. Except very early on in the game, you never run out of gold, making it a non-resource. I think the designers realized this mistake and started adding gold sinks in the form of purchasable dungeons around the 6.0 patch.&amp;nbsp;&lt;a href="#fnref7"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+
+&lt;li id="fn8"&gt;
+&lt;p&gt;When battling a dungeon, you provide one leader and four team members. You also have the option of using a friend&amp;rsquo;s monster, who serves as the team&amp;rsquo;s second leader. Leader monsters give huge team buffs, so having a roster of strong friends is paramount to fielding an overall strong team. Many higher-level players will often lend their monsters to beginners during the big descend days. Common places to look for specific friends include &lt;a href="http://reddit.com/r/puzzleanddragons"&gt;/r/puzzleanddragons&lt;/a&gt; and puzzledragonx&amp;rsquo;s &lt;a href="http://puzzledragonx.com/en/friendfinder.asp"&gt;friend finder&lt;/a&gt;.&amp;nbsp;&lt;a href="#fnref8"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+
+&lt;li id="fn9"&gt;
+&lt;p&gt;I know this isn&amp;rsquo;t entirely the case as Hera was bumped to a normal dungeon now, but it was true throughout over half of PAD&amp;rsquo;s life and the entirety of my PAD career.&amp;nbsp;&lt;a href="#fnref9"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+
+&lt;/ol&gt;
+&lt;/div&gt;
+</content>
+  </entry>
+  <entry>
+    <title>Java bytecode hacking for fun and profit</title>
+    <link rel="alternate" href="/bytecode-hacking/"/>
+    <id>/bytecode-hacking/</id>
+    <published>2014-01-06T15:59:00-05:00</published>
+    <updated>2014-01-06T15:59:00-05:00</updated>
+    <author>
+      <name>Cory Li</name>
+    </author>
+    <summary type="html">&lt;p&gt;With the &lt;a href="http://battlecode.org"&gt;2014 season of battlecode&lt;/a&gt; starting tomorrow, I figured now would be a good as time as any to finally write up my notes on bytecode hacking.  If you’re unfamiliar with Battlecode, a &lt;a href="http://cory.li/battlecode-intro/"&gt;good introduction is my previous post&lt;/a&gt; (tldr: it’s an intense...&lt;/p&gt;</summary>
+    <content type="html">&lt;p&gt;With the &lt;a href="http://battlecode.org"&gt;2014 season of battlecode&lt;/a&gt; starting tomorrow, I figured now would be a good as time as any to finally write up my notes on bytecode hacking.  If you&amp;rsquo;re unfamiliar with Battlecode, a &lt;a href="http://cory.li/battlecode-intro/"&gt;good introduction is my previous post&lt;/a&gt; (tldr: it&amp;rsquo;s an intense open-to-all programming competition where teams write AIs for virtual robot armies).&lt;/p&gt;
+
+&lt;p&gt;You might be wondering what bytecodes have to do with battlecode. Well, one of the most intriguing parts of the battlecode engine is the cost model applied to each team&amp;rsquo;s AI. In order to hard limit each team&amp;rsquo;s total computation, yet guarantee equal computation resources to each team, each team is given a bytecode limit, and their code is instrumented and allowed to run only up to that limit before it is halted. This is pretty counter-intuitive for people who are used to more traditional time-based computational limits.&lt;/p&gt;
+
+&lt;p&gt;For those unfamiliar with bytecodes, they are the atomic instructions that run on the JVM &amp;ndash; your Java source compiles down to them, similar to assembly. The tricky part is that Battlecode keeps this bytecode limit low &amp;ndash; typically in the 6-10k range. To give a rough sense of scale, an A* search through a small 8x8 grid can easily blow through the whole computational budget; Battlecode maps, however, can be anywhere from 20x20 to 60x60 tiles in size.&lt;/p&gt;
+
+&lt;p&gt;This bytecode limit, then, is actually quite interesting, as it forces teams to come up with novel and creative ways to solve problems rather than just implementing well-known algorithms. Unfortunately, it also serves as one of the major contributors to a relatively steep learning curve. My goal with this post is to elucidate just what is happening under the hood, as well as provide some tips and tricks for teams to squeeze every last drop of performance out their AIs.&lt;/p&gt;
+
+&lt;p&gt;As a disclaimer, these optimizations should be performed last, once the majority of your AI framework is built; writing good code is better than optimizing incorrect or algorithmically poor code. But that being said, when you&amp;rsquo;re tight for bytecodes, any small optimization can very well mean the difference between victory and defeat.&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;p&gt;When searching for resources on the net, it becomes apparent that bytecode optimization is something of a lost art &amp;ndash; any article on the topic comes from pre-2000, before the HotSpot JIT compiler was introduced in Java 1.3. With JIT compilation and also modern obfuscation engines like proguard, there hasn&amp;rsquo;t been much reason to pay attention to things like emitted bytecode or total class file size. Battlecode is somewhat unique as contestants are required to turn in their source, rather than compiled code (as students can take it as a course and count it for university credits). Thus, we must turn to these old techniques to to control emitted bytecodes from high-level source.&lt;/p&gt;
+
+&lt;p&gt;There are some who may scoff at bytecode optimization, reasoning that it&amp;rsquo;s a worthless skill for modern computer science, especially those working in high-level languages. Understanding what the compiler emits however is a skill still very much alive and well in embedded programming, FPGA programming, and other performance-oriented disciplines. In FPGA programming, one must have a mental model of what hardware will be synthesized &lt;em&gt;before&lt;/em&gt; writing the code. In  embedded programming,  the frequency of software-based signal generation is limited by instruction count in the loop body.&lt;/p&gt;
+
+&lt;p&gt;Honestly, most of the reward of bytecode optimization comes from being able to play with the battle-tested JVM architecture in a particularly novel way. It&amp;rsquo;s incredibly fun, especially when it gives you the edge against rival teams.What more justification does an interested hacker need?&lt;/p&gt;
+
+&lt;h3 id="jvm-bytecode-basics"&gt;JVM Bytecode Basics&lt;/h3&gt;
+
+&lt;p&gt;To understand how to work around a bytecode limit, we must first understand the JVM&amp;rsquo;s execution model.  The inner workings of the JVM are &lt;a href="http://blog.jamesdbloom.com/JVMInternals.html"&gt;well documented elsewhere on the net&lt;/a&gt; &amp;ndash; feel free to skip this section if you&amp;rsquo;re already familiar, but for those who aren&amp;rsquo;t, here&amp;rsquo;s a brief overview of the important parts.&lt;/p&gt;
+
+&lt;p&gt;The JVM is a relatively simple stack-based architecture with a fairly comprehensive instruction set allowing for manipulation of both primitives and full objects. An atomic instruction is called a bytecode, roughly equivalent to a single assembly instruction in native code. These bytecodes are stored as a stream within the compiled Java .class file, and are executed within the context of a stack frame.&lt;/p&gt;
+
+&lt;p&gt;Each stack frame contains:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;The current operand stack&lt;/li&gt;
+&lt;li&gt;An array of local variables&lt;/li&gt;
+&lt;li&gt;A reference to the constants pool of the class of the current method&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;img alt="JVM Stack Frame Overview" src="/img/2014-bytecode-hacking/jvm-diagram.png" /&gt;&lt;/p&gt;
+
+&lt;p&gt;Bytecodes perform computation by pushing and popping values onto the current frame&amp;rsquo;s operand stack. If a method is invoked, a brand new frame is created and pushed on top of the execution stack. Upon method completion, the frame is destroyed and the return value is passed to the previous frame.&lt;/p&gt;
+
+&lt;p&gt;The easiest way to understand bytecode execution is to see an example. Given the following Java code:&lt;/p&gt;
+&lt;pre class="highlight java"&gt;&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class="gutter gl"&gt;&lt;div class="lineno"&gt;1&lt;/div&gt;&lt;div class="lineno"&gt;2&lt;/div&gt;&lt;div class="lineno"&gt;3&lt;/div&gt;&lt;div class="lineno"&gt;4&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="nf"&gt;sumSquares&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+  &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;rv&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+  &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;rv&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/pre&gt;
+&lt;p&gt;Lets disassemble it and see how it works.  The standard Java SDK conveniently comes with the &lt;code&gt;javap&lt;/code&gt; disassembler. &lt;code&gt;javap -c Main&lt;/code&gt; will give you the bytecode stream for &lt;code&gt;Main.class&lt;/code&gt; in the same directory, which I&amp;rsquo;ve (overly)annotated&lt;sup id="fnref1"&gt;&lt;a href="#fn1"&gt;1&lt;/a&gt;&lt;/sup&gt; to explain how it works:&lt;/p&gt;
+&lt;pre class="highlight text"&gt;&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class="gutter gl"&gt;&lt;div class="lineno"&gt;1&lt;/div&gt;&lt;div class="lineno"&gt;2&lt;/div&gt;&lt;div class="lineno"&gt;3&lt;/div&gt;&lt;div class="lineno"&gt;4&lt;/div&gt;&lt;div class="lineno"&gt;5&lt;/div&gt;&lt;div class="lineno"&gt;6&lt;/div&gt;&lt;div class="lineno"&gt;7&lt;/div&gt;&lt;div class="lineno"&gt;8&lt;/div&gt;&lt;div class="lineno"&gt;9&lt;/div&gt;&lt;div class="lineno"&gt;10&lt;/div&gt;&lt;div class="lineno"&gt;11&lt;/div&gt;&lt;div class="lineno"&gt;12&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;public int sumSquares(int, int);
+  Code:
+     0: iload_1   // push local variable 1 (int a) onto the stack
+     1: iload_1   // push int a onto the stack again
+     2: imul      // pop two ints, multiply them, then push the result onto the stack
+     3: iload_2   // push local variable 2 (int b) onto the stack
+     4: iload_2   // push int b onto the stack again
+     5: imul      // pop two ints, multiply, and push back the result
+     6: iadd      // pop the two results, add them, and push back the result
+     7: istore_3  // store the result to local variable 3 (rv)
+     8: iload_3   // load local variable 3
+     9: ireturn   // return what&amp;#39;s on the stack (rv)
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/pre&gt;
+&lt;p&gt;Note how the assignment of local variables to array positions is determined at compile time and baked directly into the byte code stream. The two parameters are passed in as positions 1 and 2 on the locals array while &lt;code&gt;rv&lt;/code&gt; has been assigned position 3 on the array. In fact, the bytecode output from the Java source was fairly predictable &amp;ndash; we&amp;rsquo;ll use this fact to our advantage later on.&lt;/p&gt;
+
+&lt;p&gt;Here&amp;rsquo;s another simple example that contains branching:&lt;/p&gt;
+&lt;pre class="highlight java"&gt;&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class="gutter gl"&gt;&lt;div class="lineno"&gt;1&lt;/div&gt;&lt;div class="lineno"&gt;2&lt;/div&gt;&lt;div class="lineno"&gt;3&lt;/div&gt;&lt;div class="lineno"&gt;4&lt;/div&gt;&lt;div class="lineno"&gt;5&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="nf"&gt;sign&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+  &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+  &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+  &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/pre&gt;&lt;pre class="highlight text"&gt;&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class="gutter gl"&gt;&lt;div class="lineno"&gt;1&lt;/div&gt;&lt;div class="lineno"&gt;2&lt;/div&gt;&lt;div class="lineno"&gt;3&lt;/div&gt;&lt;div class="lineno"&gt;4&lt;/div&gt;&lt;div class="lineno"&gt;5&lt;/div&gt;&lt;div class="lineno"&gt;6&lt;/div&gt;&lt;div class="lineno"&gt;7&lt;/div&gt;&lt;div class="lineno"&gt;8&lt;/div&gt;&lt;div class="lineno"&gt;9&lt;/div&gt;&lt;div class="lineno"&gt;10&lt;/div&gt;&lt;div class="lineno"&gt;11&lt;/div&gt;&lt;div class="lineno"&gt;12&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;public int sign(int);
+  Code:
+     0: iload_1
+     1: ifge          6
+     4: iconst_m1
+     5: ireturn
+     6: iload_1
+     7: ifle          12
+    10: iconst_1
+    11: ireturn
+    12: iconst_0
+    13: ireturn
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/pre&gt;
+&lt;p&gt;As you may have noticed, the numbers on the left are not actually instruction count, but rather the instruction&amp;rsquo;s byte-offset from the beginning of the stream. The jump targets for &lt;code&gt;ifge&lt;/code&gt; and &lt;code&gt;ifle&lt;/code&gt; are specified in terms of these offsets.&lt;/p&gt;
+
+&lt;p&gt;With these basics in mind, we can now take a look at how to optimize algorithms from within the Battlecode engine.&lt;/p&gt;
+
+&lt;h3 id="bytecode-counting"&gt;Bytecode Counting&lt;/h3&gt;
+
+&lt;p&gt;The current generation of &lt;a href="https://github.com/battlecode/battlecode-2013-server/blob/master/src/main/battlecode/engine/instrumenter/RoboMethodTree.java"&gt;Battlecode&amp;rsquo;s instrumentation engine&lt;/a&gt; uses the &lt;a href="http://asm.ow2.org/"&gt;OW2 ASM framework&lt;/a&gt; for bytecode counting. Before a team&amp;rsquo;s code is executed, the engine walks through the generated program tree, and computes the bytecode cost of each &lt;a href="http://en.wikipedia.org/wiki/Basic_block"&gt;basic block&lt;/a&gt;. At each block&amp;rsquo;s exit, a checkpoint is injected with the block&amp;rsquo;s total cost.  During live execution, these checkpoints increment the AI&amp;rsquo;s internal total bytecode counter. If at any checkpoint the running tally exceeds &lt;code&gt;GameConstants.BYTECODE_LIMIT&lt;/code&gt;, the AI&amp;rsquo;s execution is halted and execution of the next robot&amp;rsquo;s AI begins. This essentially means that the executing robot&amp;rsquo;s turn is skipped &amp;ndash; preventing it from moving or firing its weapons if it hadn&amp;rsquo;t already done so that turn, which can be devastating in combat.&lt;/p&gt;
+
+&lt;p&gt;The system&amp;rsquo;s design allows the engine to simulate hundreds of AIs efficiently, with only moderate overhead. Earlier versions of battlecode ran on a custom JVM implementation written in Java, and while it could instrument on a per-instruction-basis, was a lot slower.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;The biggest takeaway is that you are penalized &lt;em&gt;only&lt;/em&gt; for the total number of bytecodes you use.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;A common mistake when looking at disassembled code is that the &lt;em&gt;size&lt;/em&gt; of the bytecode does not matter: &lt;code&gt;iload_0&lt;/code&gt; (0x1a) which is a one byte special compact instruction for loading the integer from local variable 0, is the same cost as the the two byte &lt;code&gt;iload #5&lt;/code&gt; (the &lt;code&gt;iload&lt;/code&gt; opcode 0x15, followed by the argument 0x05):&lt;/p&gt;
+&lt;pre class="highlight text"&gt;&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class="gutter gl"&gt;&lt;div class="lineno"&gt;1&lt;/div&gt;&lt;div class="lineno"&gt;2&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;0: iload_0          0: iload #5
+1: return           2: return
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/pre&gt;
+&lt;p&gt;When checking output from &lt;code&gt;javap&lt;/code&gt; or other disassemblers, you must remember to renumber from byte-offset to instruction-offset in order to know your total cost.&lt;/p&gt;
+
+&lt;p&gt;The &lt;em&gt;complexity&lt;/em&gt; of the bytecode instruction doesn&amp;rsquo;t matter either. As an example, here are two equivalent statements that emit two different bytecodes:&lt;/p&gt;
+&lt;pre class="highlight java"&gt;&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class="gutter gl"&gt;&lt;div class="lineno"&gt;1&lt;/div&gt;&lt;div class="lineno"&gt;2&lt;/div&gt;&lt;div class="lineno"&gt;3&lt;/div&gt;&lt;div class="lineno"&gt;4&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;choice&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="n"&gt;methodA&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
+&lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="nf"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;choice&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="n"&gt;methodB&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
+&lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="nf"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;choice&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="n"&gt;methodC&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
+&lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="nf"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;choice&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="n"&gt;methodD&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/pre&gt;
+&lt;p&gt;while compiles to&lt;sup id="fnref2"&gt;&lt;a href="#fn2"&gt;2&lt;/a&gt;&lt;/sup&gt;:&lt;/p&gt;
+&lt;pre class="highlight text"&gt;&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class="gutter gl"&gt;&lt;div class="lineno"&gt;1&lt;/div&gt;&lt;div class="lineno"&gt;2&lt;/div&gt;&lt;div class="lineno"&gt;3&lt;/div&gt;&lt;div class="lineno"&gt;4&lt;/div&gt;&lt;div class="lineno"&gt;5&lt;/div&gt;&lt;div class="lineno"&gt;6&lt;/div&gt;&lt;div class="lineno"&gt;7&lt;/div&gt;&lt;div class="lineno"&gt;8&lt;/div&gt;&lt;div class="lineno"&gt;9&lt;/div&gt;&lt;div class="lineno"&gt;10&lt;/div&gt;&lt;div class="lineno"&gt;11&lt;/div&gt;&lt;div class="lineno"&gt;12&lt;/div&gt;&lt;div class="lineno"&gt;13&lt;/div&gt;&lt;div class="lineno"&gt;14&lt;/div&gt;&lt;div class="lineno"&gt;15&lt;/div&gt;&lt;div class="lineno"&gt;16&lt;/div&gt;&lt;div class="lineno"&gt;17&lt;/div&gt;&lt;div class="lineno"&gt;18&lt;/div&gt;&lt;div class="lineno"&gt;19&lt;/div&gt;&lt;div class="lineno"&gt;20&lt;/div&gt;&lt;div class="lineno"&gt;21&lt;/div&gt;&lt;div class="lineno"&gt;22&lt;/div&gt;&lt;div class="lineno"&gt;23&lt;/div&gt;&lt;div class="lineno"&gt;24&lt;/div&gt;&lt;div class="lineno"&gt;25&lt;/div&gt;&lt;div class="lineno"&gt;26&lt;/div&gt;&lt;div class="lineno"&gt;27&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt; 0: aload_0
+ 1: getfield      #45                 // Field choice:I
+ 4: iconst_1
+ 5: if_icmpne     15
+ 8: aload_0
+ 9: invokevirtual #47                 // Method methodA:()V
+12: goto          57
+15: aload_0
+16: getfield      #45                 // Field choice:I
+19: iconst_2
+20: if_icmpne     30
+23: aload_0
+24: invokevirtual #49                 // Method methodB:()V
+27: goto          57
+30: aload_0
+31: getfield      #45                 // Field choice:I
+34: iconst_3
+35: if_icmpne     45
+38: aload_0
+39: invokevirtual #51                 // Method methodC:()V
+42: goto          57
+45: aload_0
+46: getfield      #45                 // Field choice:I
+49: iconst_4
+50: if_icmpne     57
+53: aload_0
+54: invokevirtual #53                 // Method methodD:()V
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/pre&gt;
+&lt;p&gt;and the same expression written as a switch statement:&lt;/p&gt;
+&lt;pre class="highlight java"&gt;&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class="gutter gl"&gt;&lt;div class="lineno"&gt;1&lt;/div&gt;&lt;div class="lineno"&gt;2&lt;/div&gt;&lt;div class="lineno"&gt;3&lt;/div&gt;&lt;div class="lineno"&gt;4&lt;/div&gt;&lt;div class="lineno"&gt;5&lt;/div&gt;&lt;div class="lineno"&gt;6&lt;/div&gt;&lt;div class="lineno"&gt;7&lt;/div&gt;&lt;div class="lineno"&gt;8&lt;/div&gt;&lt;div class="lineno"&gt;9&lt;/div&gt;&lt;div class="lineno"&gt;10&lt;/div&gt;&lt;div class="lineno"&gt;11&lt;/div&gt;&lt;div class="lineno"&gt;12&lt;/div&gt;&lt;div class="lineno"&gt;13&lt;/div&gt;&lt;div class="lineno"&gt;14&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;span class="k"&gt;switch&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;choice&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+&lt;span class="k"&gt;case&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+  &lt;span class="n"&gt;methodA&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
+  &lt;span class="k"&gt;break&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="k"&gt;case&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+  &lt;span class="n"&gt;methodB&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
+  &lt;span class="k"&gt;break&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="k"&gt;case&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+  &lt;span class="n"&gt;methodC&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
+  &lt;span class="k"&gt;break&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="k"&gt;case&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+  &lt;span class="n"&gt;methodD&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
+  &lt;span class="k"&gt;break&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/pre&gt;&lt;pre class="highlight text"&gt;&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class="gutter gl"&gt;&lt;div class="lineno"&gt;1&lt;/div&gt;&lt;div class="lineno"&gt;2&lt;/div&gt;&lt;div class="lineno"&gt;3&lt;/div&gt;&lt;div class="lineno"&gt;4&lt;/div&gt;&lt;div class="lineno"&gt;5&lt;/div&gt;&lt;div class="lineno"&gt;6&lt;/div&gt;&lt;div class="lineno"&gt;7&lt;/div&gt;&lt;div class="lineno"&gt;8&lt;/div&gt;&lt;div class="lineno"&gt;9&lt;/div&gt;&lt;div class="lineno"&gt;10&lt;/div&gt;&lt;div class="lineno"&gt;11&lt;/div&gt;&lt;div class="lineno"&gt;12&lt;/div&gt;&lt;div class="lineno"&gt;13&lt;/div&gt;&lt;div class="lineno"&gt;14&lt;/div&gt;&lt;div class="lineno"&gt;15&lt;/div&gt;&lt;div class="lineno"&gt;16&lt;/div&gt;&lt;div class="lineno"&gt;17&lt;/div&gt;&lt;div class="lineno"&gt;18&lt;/div&gt;&lt;div class="lineno"&gt;19&lt;/div&gt;&lt;div class="lineno"&gt;20&lt;/div&gt;&lt;div class="lineno"&gt;21&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt; 0: aload_0
+ 1: getfield      #45                 // Field choice:I
+ 4: tableswitch   { // 2 to 6
+               2: 40
+               3: 47
+               4: 54
+               5: 65
+               6: 61
+         default: 65
+    }
+40: aload_0
+41: invokevirtual #47                 // Method methodA:()V
+44: goto          65
+47: aload_0
+48: invokevirtual #49                 // Method methodB:()V
+51: goto          65
+54: aload_0
+55: invokevirtual #51                 // Method methodC:()V
+58: goto          65
+61: aload_0
+62: invokevirtual #53                 // Method methodD:()V
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/pre&gt;
+&lt;p&gt;Notice how the if-else statements emit sequential &lt;code&gt;if_icmpne&lt;/code&gt; instructions which much be evaluated in order, while the switch statement emits a single &lt;code&gt;lookupswitch&lt;/code&gt;&lt;sup id="fnref3"&gt;&lt;a href="#fn3"&gt;3&lt;/a&gt;&lt;/sup&gt; instruction that will jump directly to the correct block. It is to your advantage to use complex instructions.&lt;/p&gt;
+
+&lt;h3 id="loop-optimizations"&gt;Loop Optimizations&lt;/h3&gt;
+
+&lt;p&gt;With these general ideas in mind, we can begin to explore more advanced optimization techniques. When optimizing bytecodes, our primary goal is to reduce the total instruction count to a bare minimum. We&amp;rsquo;re lucky in that we don&amp;rsquo;t have to benchmark to determine performance &amp;ndash; we only have to count the total number of instructions&lt;sup id="fnref4"&gt;&lt;a href="#fn4"&gt;4&lt;/a&gt;&lt;/sup&gt;. The easiest way to illustrate optimization is to walk through a complete example of optimizing a tight loop.&lt;/p&gt;
+
+&lt;p&gt;Lets begin with a hypothetical controller class that encapsulates an array of objects that we care about, say &lt;code&gt;enemy_robots&lt;/code&gt;. We want to build a method called &lt;code&gt;scanAll&lt;/code&gt; that will iterate through all the enemy robots one by one and call the &lt;code&gt;scan&lt;/code&gt; method on each.&lt;/p&gt;
+&lt;pre class="highlight java"&gt;&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class="gutter gl"&gt;&lt;div class="lineno"&gt;1&lt;/div&gt;&lt;div class="lineno"&gt;2&lt;/div&gt;&lt;div class="lineno"&gt;3&lt;/div&gt;&lt;div class="lineno"&gt;4&lt;/div&gt;&lt;div class="lineno"&gt;5&lt;/div&gt;&lt;div class="lineno"&gt;6&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kd"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Controller&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+  &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="n"&gt;RobotInfo&lt;/span&gt;&lt;span class="o"&gt;[]&lt;/span&gt; &lt;span class="n"&gt;enemy_robots&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+  &lt;span class="kd"&gt;public&lt;/span&gt; &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;scanAll&lt;/span&gt;&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+    &lt;span class="cm"&gt;/* code to iterate through enemey_robots and scan them */&lt;/span&gt;
+  &lt;span class="o"&gt;}&lt;/span&gt;
+&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/pre&gt;
+&lt;p&gt;Since Java 5, there has been an easy way to write these for-each loops, which will do nicely for our first pass:&lt;/p&gt;
+&lt;pre class="highlight java"&gt;&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class="gutter gl"&gt;&lt;div class="lineno"&gt;1&lt;/div&gt;&lt;div class="lineno"&gt;2&lt;/div&gt;&lt;div class="lineno"&gt;3&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;span class="k"&gt;for&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;RobotInfo&lt;/span&gt; &lt;span class="n"&gt;rinfo&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;enemy_robots&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+  &lt;span class="n"&gt;rinfo&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;scan&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
+&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/pre&gt;
+&lt;p&gt;I&amp;rsquo;ve done the following things to the below disassembly &amp;ndash; I&amp;rsquo;ve heavily annotated each opcode, and I&amp;rsquo;ve also &lt;em&gt;renumbered&lt;/em&gt; the indices given from &lt;code&gt;javap&lt;/code&gt; from a byte-offset to an instruction index (as the instruction count is what we are penalized for).&lt;/p&gt;
+&lt;pre class="highlight text"&gt;&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class="gutter gl"&gt;&lt;div class="lineno"&gt;1&lt;/div&gt;&lt;div class="lineno"&gt;2&lt;/div&gt;&lt;div class="lineno"&gt;3&lt;/div&gt;&lt;div class="lineno"&gt;4&lt;/div&gt;&lt;div class="lineno"&gt;5&lt;/div&gt;&lt;div class="lineno"&gt;6&lt;/div&gt;&lt;div class="lineno"&gt;7&lt;/div&gt;&lt;div class="lineno"&gt;8&lt;/div&gt;&lt;div class="lineno"&gt;9&lt;/div&gt;&lt;div class="lineno"&gt;10&lt;/div&gt;&lt;div class="lineno"&gt;11&lt;/div&gt;&lt;div class="lineno"&gt;12&lt;/div&gt;&lt;div class="lineno"&gt;13&lt;/div&gt;&lt;div class="lineno"&gt;14&lt;/div&gt;&lt;div class="lineno"&gt;15&lt;/div&gt;&lt;div class="lineno"&gt;16&lt;/div&gt;&lt;div class="lineno"&gt;17&lt;/div&gt;&lt;div class="lineno"&gt;18&lt;/div&gt;&lt;div class="lineno"&gt;19&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;aload_0                  // Variable 0 (the &amp;quot;this&amp;quot; object reference)
+getfield      #14        // Field enemy_robots:[Lbytecodetests/RobotInfo;
+dup                      // Duplicates the last object on the stack (enemy_robots)
+astore        4          // locals[4] = enemy_robots
+arraylength
+istore_3                 // locals[3] = enemy_robots.length
+iconst_0                 // loads the value 0 onto the stack
+istore_2                 // locals[2] = 0 (or the loop index)
+goto          17         // LOOP BEGINS HERE:
+aload         4
+iload_2
+aaload                   // loads index (locals[2]) of enemy_robots
+astore_1                 // locals[1] = enemy_robots[index]
+aload_1
+invokevirtual #21        // Method bytecodetests/RobotInfo.scan:()V
+iinc          2, 1       // locals[2]++
+iload_2
+iload_3
+if_icmplt     10         // if index &amp;lt; enemyrobots.length, jump to instruction 10
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/pre&gt;
+&lt;p&gt;In the above disassembly, the compiler has assigned the following variables into the locals array as such:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;variable &lt;code&gt;rinfo&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;implicit loop index&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;enemy_robots.length&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;enemy_robots&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;The zeroth position is special &amp;ndash; it&amp;rsquo;s almost always &lt;code&gt;this&lt;/code&gt;, that is, the current enclosing object. We&amp;rsquo;ll see later why that is important.&lt;/p&gt;
+
+&lt;p&gt;Our main loop body is from instruction 10 to instruction 19, a total size of 10 bytecodes. So our total bytecode count for this routine is the overhead (12) plus the loop body (10) times the number of iterations. Assuming that the number of iterations is large, how can we reduce this cost? One way is to write the loop in a more old fashioned way:&lt;/p&gt;
+&lt;pre class="highlight java"&gt;&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class="gutter gl"&gt;&lt;div class="lineno"&gt;1&lt;/div&gt;&lt;div class="lineno"&gt;2&lt;/div&gt;&lt;div class="lineno"&gt;3&lt;/div&gt;&lt;div class="lineno"&gt;4&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;length&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;enemy_robots&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;length&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="k"&gt;for&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;length&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;++)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+  &lt;span class="n"&gt;enemy_robots&lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;].&lt;/span&gt;&lt;span class="na"&gt;scan&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
+&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/pre&gt;
+&lt;p&gt;Note that we pre-compute &lt;code&gt;length&lt;/code&gt; so that we don&amp;rsquo;t incur the cost of computing &lt;code&gt;enemy_robots.length&lt;/code&gt; every loop iteration (doing so would be an extra &lt;code&gt;aload&lt;/code&gt;, &lt;code&gt;getfield&lt;/code&gt; and &lt;code&gt;arraylength&lt;/code&gt; per loop instead of a single &lt;code&gt;iload&lt;/code&gt; call). The emitted byte code is below, again annotated and re-indexed:&lt;/p&gt;
+&lt;pre class="highlight text"&gt;&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class="gutter gl"&gt;&lt;div class="lineno"&gt;1&lt;/div&gt;&lt;div class="lineno"&gt;2&lt;/div&gt;&lt;div class="lineno"&gt;3&lt;/div&gt;&lt;div class="lineno"&gt;4&lt;/div&gt;&lt;div class="lineno"&gt;5&lt;/div&gt;&lt;div class="lineno"&gt;6&lt;/div&gt;&lt;div class="lineno"&gt;7&lt;/div&gt;&lt;div class="lineno"&gt;8&lt;/div&gt;&lt;div class="lineno"&gt;9&lt;/div&gt;&lt;div class="lineno"&gt;10&lt;/div&gt;&lt;div class="lineno"&gt;11&lt;/div&gt;&lt;div class="lineno"&gt;12&lt;/div&gt;&lt;div class="lineno"&gt;13&lt;/div&gt;&lt;div class="lineno"&gt;14&lt;/div&gt;&lt;div class="lineno"&gt;15&lt;/div&gt;&lt;div class="lineno"&gt;16&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;aload_0
+getfield      #16     // Field enemy_robots:[Lbytecodetests/RobotInfo;
+arraylength
+istore_1
+iconst_0
+istore_2
+goto          14      // LOOP BEGINS HERE:
+aload_0
+getfield      #16     // Field enemy_robots:[Lbytecodetests/RobotInfo;
+iload_2
+aaload
+invokevirtual #23     // Method bytecodetests/RobotInfo.scan:()V
+iinc          2, 1
+iload_2
+iload_1
+if_icmplt     8
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/pre&gt;
+&lt;p&gt;In this example, the compiler has actually only assigned three local variables:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;locals[0]: the &lt;code&gt;this&lt;/code&gt; reference&lt;/li&gt;
+&lt;li&gt;locals[1]: the precomputed array-length &lt;code&gt;length&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;locals[2]: the loop index &lt;code&gt;i&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The total loop comes out to 9 bytecodes per iteration. We saved exactly 1 bytecode for increased code complexity. Sadistic, isn&amp;rsquo;t it?  The saved instruction comes from not having to &lt;code&gt;astore&lt;/code&gt;, &lt;code&gt;aload&lt;/code&gt; the extra local variable &lt;code&gt;rinfo&lt;/code&gt; that was required in the for-each example. We did however lose a bytecode having to &lt;code&gt;getfield&lt;/code&gt; the implicit class-variable &lt;code&gt;enemey_robots&lt;/code&gt;. Lets try to recover it.&lt;/p&gt;
+
+&lt;h3 id="pulling-things-into-local-scope"&gt;Pulling things into local scope&lt;/h3&gt;
+
+&lt;p&gt;In our above example, because &lt;code&gt;enemy_robots&lt;/code&gt; is actually a class-level variable, in order to reference &lt;code&gt;enemy_robots&lt;/code&gt;, the implicit &lt;code&gt;this&lt;/code&gt; must be pushed onto the stack first.&lt;/p&gt;
+
+&lt;p&gt;Each access thus requires an &lt;code&gt;aload_0&lt;/code&gt; followed by a &lt;code&gt;getfield&lt;/code&gt;. If we instead assign &lt;code&gt;enemy_robots&lt;/code&gt; to a local variable, it becomes a single bytecode &lt;code&gt;aload #x&lt;/code&gt;, grabbed directly from local variable array.  So let&amp;rsquo;s pay the overhead cost to bring &lt;code&gt;enemy_robots&lt;/code&gt; down into local scope and rewrite the loop:&lt;/p&gt;
+&lt;pre class="highlight java"&gt;&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class="gutter gl"&gt;&lt;div class="lineno"&gt;1&lt;/div&gt;&lt;div class="lineno"&gt;2&lt;/div&gt;&lt;div class="lineno"&gt;3&lt;/div&gt;&lt;div class="lineno"&gt;4&lt;/div&gt;&lt;div class="lineno"&gt;5&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;span class="n"&gt;RobotInfo&lt;/span&gt;&lt;span class="o"&gt;[]&lt;/span&gt; &lt;span class="n"&gt;local_enemy_robots&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;enemy_robots&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;length&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;local_enemy_robots&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;length&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="k"&gt;for&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;length&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;++)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+  &lt;span class="n"&gt;local_enemy_robots&lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;].&lt;/span&gt;&lt;span class="na"&gt;scan&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
+&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/pre&gt;
+&lt;p&gt;Again, for additional complexity, we save another bytecode!&lt;sup id="fnref5"&gt;&lt;a href="#fn5"&gt;5&lt;/a&gt;&lt;/sup&gt; Can we do even better?&lt;/p&gt;
+
+&lt;h3 id="comparisons-against-zero"&gt;Comparisons against zero&lt;/h3&gt;
+
+&lt;p&gt;It turns out we can actually save one additional bytecode if we rewrite the entire loop structure as follows:&lt;/p&gt;
+&lt;pre class="highlight java"&gt;&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class="gutter gl"&gt;&lt;div class="lineno"&gt;1&lt;/div&gt;&lt;div class="lineno"&gt;2&lt;/div&gt;&lt;div class="lineno"&gt;3&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;span class="k"&gt;for&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;local_enemy_robots&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;length&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="o"&gt;;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+  &lt;span class="n"&gt;local_enemy_robots&lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;].&lt;/span&gt;&lt;span class="na"&gt;scan&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
+&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/pre&gt;&lt;pre class="highlight text"&gt;&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class="gutter gl"&gt;&lt;div class="lineno"&gt;1&lt;/div&gt;&lt;div class="lineno"&gt;2&lt;/div&gt;&lt;div class="lineno"&gt;3&lt;/div&gt;&lt;div class="lineno"&gt;4&lt;/div&gt;&lt;div class="lineno"&gt;5&lt;/div&gt;&lt;div class="lineno"&gt;6&lt;/div&gt;&lt;div class="lineno"&gt;7&lt;/div&gt;&lt;div class="lineno"&gt;8&lt;/div&gt;&lt;div class="lineno"&gt;9&lt;/div&gt;&lt;div class="lineno"&gt;10&lt;/div&gt;&lt;div class="lineno"&gt;11&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;aload_1
+arraylength
+istore_2
+goto          9
+aload_1
+iload_2
+aaload
+invokevirtual #32      // Method bytecodetests/RobotInfo.scan:()V
+iinc          2, -1
+iload_2
+ifge          5
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/pre&gt;
+&lt;p&gt;Because the loop now decrements from the array length to zero, our loop termination conditional is a check against zero, which java has a special bytecode for: &lt;code&gt;ifge&lt;/code&gt;. This means that we only have to push one number onto the stack instead of the two required for &lt;code&gt;if_icmplt&lt;/code&gt;, cutting out an &lt;code&gt;iload&lt;/code&gt;. This now brings us down to 7 bytecodes!&lt;/p&gt;
+
+&lt;h3 id="putting-it-all-together"&gt;Putting it all together&lt;/h3&gt;
+
+&lt;p&gt;The following table shows the loop bodies of each step of our optimization with the extraneous instruction bolded:&lt;/p&gt;
+
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style="text-align: right"&gt;&lt;/th&gt;
+&lt;th style="text-align: left"&gt;for-each&lt;/th&gt;
+&lt;th style="text-align: left"&gt;for-index&lt;/th&gt;
+&lt;th style="text-align: left"&gt;with-locals&lt;/th&gt;
+&lt;th style="text-align: left"&gt;reversed&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style="text-align: right"&gt;1&lt;/td&gt;
+&lt;td style="text-align: left"&gt;aload&lt;/td&gt;
+&lt;td style="text-align: left"&gt;aload_0&lt;/td&gt;
+&lt;td style="text-align: left"&gt;aload_1&lt;/td&gt;
+&lt;td style="text-align: left"&gt;aload_1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: right"&gt;2&lt;/td&gt;
+&lt;td style="text-align: left"&gt;iload_2&lt;/td&gt;
+&lt;td style="text-align: left"&gt;&lt;strong&gt;getfield&lt;/strong&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;iload_2&lt;/td&gt;
+&lt;td style="text-align: left"&gt;iload_2&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: right"&gt;3&lt;/td&gt;
+&lt;td style="text-align: left"&gt;aaload&lt;/td&gt;
+&lt;td style="text-align: left"&gt;iload_2&lt;/td&gt;
+&lt;td style="text-align: left"&gt;aaload&lt;/td&gt;
+&lt;td style="text-align: left"&gt;aaload&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: right"&gt;4&lt;/td&gt;
+&lt;td style="text-align: left"&gt;&lt;strong&gt;astore_1&lt;/strong&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;aaload&lt;/td&gt;
+&lt;td style="text-align: left"&gt;invokevirtual&lt;/td&gt;
+&lt;td style="text-align: left"&gt;invokevirtual&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: right"&gt;5&lt;/td&gt;
+&lt;td style="text-align: left"&gt;&lt;strong&gt;aload_1&lt;/strong&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;invokevirtual&lt;/td&gt;
+&lt;td style="text-align: left"&gt;iinc&lt;/td&gt;
+&lt;td style="text-align: left"&gt;iinc&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: right"&gt;6&lt;/td&gt;
+&lt;td style="text-align: left"&gt;invokevirtual&lt;/td&gt;
+&lt;td style="text-align: left"&gt;iinc&lt;/td&gt;
+&lt;td style="text-align: left"&gt;iload_2&lt;/td&gt;
+&lt;td style="text-align: left"&gt;iload_2&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: right"&gt;7&lt;/td&gt;
+&lt;td style="text-align: left"&gt;iinc&lt;/td&gt;
+&lt;td style="text-align: left"&gt;iload_2&lt;/td&gt;
+&lt;td style="text-align: left"&gt;&lt;strong&gt;iload_1&lt;/strong&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;ifge&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: right"&gt;8&lt;/td&gt;
+&lt;td style="text-align: left"&gt;iload_2&lt;/td&gt;
+&lt;td style="text-align: left"&gt;iload_1&lt;/td&gt;
+&lt;td style="text-align: left"&gt;if_icmplt&lt;/td&gt;
+&lt;td style="text-align: left"&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: right"&gt;9&lt;/td&gt;
+&lt;td style="text-align: left"&gt;iload_3&lt;/td&gt;
+&lt;td style="text-align: left"&gt;if_icmplt&lt;/td&gt;
+&lt;td style="text-align: left"&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: right"&gt;10&lt;/td&gt;
+&lt;td style="text-align: left"&gt;if_icmplt&lt;/td&gt;
+&lt;td style="text-align: left"&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+
+&lt;p&gt;To recap, just by tweaking and reorganizing the structure of the loop itself, we managed to reduce overhead instruction count by 30%. And in tight loops that run hundreds/thousands of times, we bank appreciable bytecode savings that we then can spend on more critical code paths &amp;ndash; like running a pathfinding algorithm several steps further, or processing a few more enemies in a weapons targeting system.&lt;/p&gt;
+
+&lt;h3 id="generating-gotos"&gt;Generating GOTOs&lt;/h3&gt;
+
+&lt;p&gt;Any discussion of loop optimization wouldn&amp;rsquo;t be complete without a brief discussion of loop termination. In Java, similarly to most languages, you can early terminate a loop with the &lt;code&gt;break&lt;/code&gt; keyword, or skip a loop iteration with the &lt;code&gt;continue&lt;/code&gt; keyword.  It&amp;rsquo;s the closest thing we have in Java to a general purpose &lt;code&gt;goto&lt;/code&gt; statement.&lt;/p&gt;
+&lt;pre class="highlight java"&gt;&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class="gutter gl"&gt;&lt;div class="lineno"&gt;1&lt;/div&gt;&lt;div class="lineno"&gt;2&lt;/div&gt;&lt;div class="lineno"&gt;3&lt;/div&gt;&lt;div class="lineno"&gt;4&lt;/div&gt;&lt;div class="lineno"&gt;5&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;span class="k"&gt;while&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="kc"&gt;true&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+  &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;condition_one&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="k"&gt;continue&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+  &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;condition_two&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="k"&gt;break&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+  &lt;span class="cm"&gt;/* code */&lt;/span&gt;
+&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/pre&gt;
+&lt;p&gt;By putting those two conditional checks early, we can force the compiler to generate a &lt;code&gt;goto&lt;/code&gt; instruction and prevent wasteful execution of the loop body.&lt;/p&gt;
+
+&lt;p&gt;In Java, you can also break out of two nested loops by labeling the first loop and using a labeled break statement as follows:&lt;/p&gt;
+&lt;pre class="highlight java"&gt;&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class="gutter gl"&gt;&lt;div class="lineno"&gt;1&lt;/div&gt;&lt;div class="lineno"&gt;2&lt;/div&gt;&lt;div class="lineno"&gt;3&lt;/div&gt;&lt;div class="lineno"&gt;4&lt;/div&gt;&lt;div class="lineno"&gt;5&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;span class="nl"&gt;outerloop:&lt;/span&gt; &lt;span class="k"&gt;while&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;first_condition&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+  &lt;span class="k"&gt;while&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;second_condition&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;third_condition&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="k"&gt;break&lt;/span&gt; &lt;span class="n"&gt;outer&lt;/span&gt; &lt;span class="n"&gt;loop&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+  &lt;span class="o"&gt;}&lt;/span&gt;
+&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/pre&gt;
+&lt;p&gt;This neat trick can help prevent the need for a sentinel value in the outer loop. A corresponding trick that most people &lt;em&gt;don&amp;rsquo;t&lt;/em&gt; know is that you can actually break out of &lt;em&gt;arbitrary&lt;/em&gt; labeled blocks. This gives you an ugly but capable forward-jumping &amp;ldquo;goto&amp;rdquo; statement:&lt;/p&gt;
+&lt;pre class="highlight java"&gt;&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class="gutter gl"&gt;&lt;div class="lineno"&gt;1&lt;/div&gt;&lt;div class="lineno"&gt;2&lt;/div&gt;&lt;div class="lineno"&gt;3&lt;/div&gt;&lt;div class="lineno"&gt;4&lt;/div&gt;&lt;div class="lineno"&gt;5&lt;/div&gt;&lt;div class="lineno"&gt;6&lt;/div&gt;&lt;div class="lineno"&gt;7&lt;/div&gt;&lt;div class="lineno"&gt;8&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;span class="nl"&gt;label1:&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+  &lt;span class="nl"&gt;label2:&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+    &lt;span class="cm"&gt;/* code */&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;first_conditional&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="k"&gt;break&lt;/span&gt; &lt;span class="n"&gt;label2&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;second_conditional&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="k"&gt;break&lt;/span&gt; &lt;span class="n"&gt;label1&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+  &lt;span class="o"&gt;}&lt;/span&gt;
+  &lt;span class="cm"&gt;/* more code */&lt;/span&gt;
+&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/pre&gt;
+&lt;p&gt;As a disclaimer, I would never, ever, ever use this in normal day-to-day code, but if you need to squeeze some extra bytecodes in a pinch, it&amp;rsquo;ll do.&lt;/p&gt;
+
+&lt;h3 id="closing-thoughts"&gt;Closing Thoughts&lt;/h3&gt;
+
+&lt;p&gt;My hope is that this post has given you some insight into how the Java compiler emits bytecodes and how you can use that to your advantage to reduce your total instruction count.&lt;/p&gt;
+
+&lt;p&gt;In the 2012 Battlecode competition, we used the above techniques extensively in writing what we called the &lt;a href="https://bitbucket.org/Cixelyn/bcode2012-bot/src/69758a5c59a00545923a99f914c580898d6aa88e/teams/ducks/HibernationSystem.java"&gt;hibernation system&lt;/a&gt;, a very tight loop that consumed only 69 bytecodes per turn.  In that year&amp;rsquo;s game spec, an AI&amp;rsquo;s unused bytecodes could be directly refunded for energy at the end of the turn, so the hibernation system was effectively a low-power state for our AIs that allowed us to stockpile energy.  This, in turn, allowed our army to sustain roughly 2x more robots than normally possible with typical (1000-2000) bytecode usage, giving us the edge in combat.&lt;/p&gt;
+
+&lt;p&gt;It can&amp;rsquo;t be stressed enough, however, that many of these optimizations should be done only &lt;em&gt;after&lt;/em&gt; all other avenues have been exhausted. There are a large number of algorithmic and data structure tricks to perform which may yield even greater savings, some of which are discussed in our &lt;a href="https://bitbucket.org/Cixelyn/bcode2012-bot/downloads/strategyreport.pdf"&gt;winning 2012 strategy report&lt;/a&gt;. I hope to write up these as a stand-alone post at some point, as they are somewhat out of the scope of this article. But for the curious, our strategy report, combined with &lt;a href="http://stevearc.blogspot.com/2011/12/code-snippits_17.html"&gt;Steve Arcangeli&amp;rsquo;s 2011 code snippet notes&lt;/a&gt;, should provide a reasonable background to the topic.&lt;/p&gt;
+
+&lt;p&gt;To the teams competing in the 2014 competition: best of luck, and don&amp;rsquo;t forget to have fun!&lt;/p&gt;
+
+&lt;div class="footnotes"&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+
+&lt;li id="fn1"&gt;
+&lt;p&gt;When looking through Java disassembly, it&amp;rsquo;s helpful to have a quick reference. Wikipedia has page on &lt;a href="http://en.wikipedia.org/wiki/Java_bytecode_instruction_listings"&gt;Java byte codes and their operations&lt;/a&gt; which is useful for at-a-glance lookup. The more detailed (and official) description of the bytecode operations can be found in &lt;a href="http://docs.oracle.com/javase/specs/jvms/se7/html/jvms-6.html"&gt;Oracle&amp;rsquo;s JVM reference&lt;/a&gt;.&amp;nbsp;&lt;a href="#fnref1"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+
+&lt;li id="fn2"&gt;
+&lt;p&gt;When reading the output of &lt;code&gt;javap&lt;/code&gt;, the comments following an &lt;code&gt;invokevirtual&lt;/code&gt; command denote the signature of the method being invoked. The format is the list of arguments types in parenthesis followed by the return value type. The types are shortened to their one letter code to remain compact.&amp;nbsp;&lt;a href="#fnref2"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Source Declaration&lt;/th&gt;
+&lt;th&gt;Method Descriptor&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;void m(int i, float f)&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;(IF)V&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;int[] m(int i, String s)&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;(ILjava/lang/String;)[I&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+&lt;/li&gt;
+
+&lt;li id="fn3"&gt;
+&lt;p&gt;As an aside, for speed, the Bytecode format actually has two types of table-based jumps: &lt;code&gt;lookupswitch&lt;/code&gt; and &lt;code&gt;tableswitch&lt;/code&gt;.  If the indices are roughly sequential, the compiler will pack them into a &lt;code&gt;lookupswitch&lt;/code&gt; table in which the parameter into the switch statement is the table offset, giving an O(1) lookup of the jump address. If the indices are far apart / non-sequential however, packing them into a fixed-interval table would be very wasteful, and so the &lt;code&gt;lookupswitch&lt;/code&gt; table stores both the case value and the jump offset, allowing the JVM to binary search through the possible case statements for the correct jump vector.&amp;nbsp;&lt;a href="#fnref3"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;The best thing of course is that despite &lt;code&gt;lookupswitch&lt;/code&gt; having O(1) complexity and &lt;code&gt;tableswitch&lt;/code&gt; having O(log &lt;em&gt;n&lt;/em&gt;) complexity, in battlecode they&amp;rsquo;re equivalent because we&amp;rsquo;re only counting the bytecodes, and not the true computational cost! So you don&amp;rsquo;t have to worry about creating compact case statements! :D&lt;/p&gt;
+&lt;/li&gt;
+
+&lt;li id="fn4"&gt;
+&lt;p&gt;That&amp;rsquo;s not to say benchmarking isn&amp;rsquo;t important, as it&amp;rsquo;s often one of the fastest ways to profile new routines or survey where your biggest bytecode expenses are. The engine conveniently provides &lt;code&gt;Clock.getBytecodeNum()&lt;/code&gt; to check your usage for the current turn.&amp;nbsp;&lt;a href="#fnref4"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;If you&amp;rsquo;re benchmarking large routines or your entire AI framework, you&amp;rsquo;ll want to make sure you account for bytecode overage due to turn-skipping. In our &lt;a href="https://bitbucket.org/Cixelyn/bcode2012-bot/src/69758a5c59a00545923a99f914c580898d6aa88e/teams/ducks/BaseRobot.java?at=default#cl-220"&gt;main framework&lt;/a&gt;, one of the first things we wrote was a method to get true bytecode count so we could accurately gauge performance. The following formula should give the correct count:&lt;/p&gt;
+&lt;pre class="highlight java"&gt;&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class="gutter gl"&gt;&lt;div class="lineno"&gt;1&lt;/div&gt;&lt;div class="lineno"&gt;2&lt;/div&gt;&lt;div class="lineno"&gt;3&lt;/div&gt;&lt;div class="lineno"&gt;4&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="kt"&gt;byte&lt;/span&gt;&lt;span class="n"&gt;Count&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt;
+    &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;GameConstants&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;BYTECODE_LIMIT&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;executeStartByte&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt;
+    &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;currRound&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;executeStartTime&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;GameConstants&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;BYTECODE_LIMIT&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt;
+    &lt;span class="n"&gt;Clock&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;getBytecodeNum&lt;/span&gt;&lt;span class="o"&gt;();&lt;/span&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/pre&gt;&lt;/li&gt;
+
+&lt;li id="fn5"&gt;
+&lt;p&gt;In this example, we only access &lt;code&gt;enemy_robots&lt;/code&gt; a single time in the loop body &amp;ndash; in a real-world example, this technique has the potential to realize even greater savings, especially for member variables that are accessed often.&amp;nbsp;&lt;a href="#fnref5"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+
+&lt;/ol&gt;
+&lt;/div&gt;
+</content>
+  </entry>
+  <entry>
+    <title>Battlecode: MIT's longest-running hardcore programming competition</title>
+    <link rel="alternate" href="/battlecode-intro/"/>
+    <id>/battlecode-intro/</id>
+    <published>2013-01-07T03:00:00-05:00</published>
+    <updated>2013-01-07T03:00:00-05:00</updated>
+    <author>
+      <name>Cory Li</name>
+    </author>
+    <summary type="html">&lt;p&gt;As MIT’s &lt;a href="http://web.mit.edu/iap/"&gt;Independent Activities Period&lt;/a&gt; draws near, I’ve received quite a volume of inquiries from underclassmen about “what should I take?” or “which of these competitions is better?”&lt;/p&gt;
+
+&lt;p&gt;It would be nice if I could point all future questions to a single...&lt;/p&gt;</summary>
+    <content type="html">&lt;p&gt;As MIT&amp;rsquo;s &lt;a href="http://web.mit.edu/iap/"&gt;Independent Activities Period&lt;/a&gt; draws near, I&amp;rsquo;ve received quite a volume of inquiries from underclassmen about &amp;ldquo;what should I take?&amp;rdquo; or &amp;ldquo;which of these competitions is better?&amp;rdquo;&lt;/p&gt;
+
+&lt;p&gt;It would be nice if I could point all future questions to a single place. So here are my thoughts on (read: pitch for) &lt;a href="http://www.battlecode.org/info/"&gt;Battlecode&lt;/a&gt; &amp;ndash; MIT&amp;rsquo;s longest-running and most badass programming competition.&lt;/p&gt;
+
+&lt;h3 id="what-is-it"&gt;What is it?&lt;/h3&gt;
+
+&lt;p&gt;On a cold Boston January night on a dark stage in front of hundreds of cheering students, two teams will command massive armies and engage in deadly warfare &amp;ndash; all within virtual reality. By this point, both teams will have worked tirelessly for four whole weeks to program and polish the best possible AI.&lt;/p&gt;
+
+&lt;p&gt;The battlefield itself is rendered in 3D on the center screen of MIT&amp;rsquo;s main auditorium, with two side screens providing a map overview as well as match statistics. The crowd cheers as the AIs are initialized and the two sides begin constructing robots, capturing objectives, and annihilating each other to the sound of lasers and explosions.&lt;/p&gt;
+
+&lt;p&gt;Eventually one team will be violently eliminated in a display of tactical genius on the part of the other &amp;ndash; the eliminated team was unable to design an effective counter in the last week leading up to the finals. Sadly, they walk off the stage, a little disheartened, but happy to have made it so far in the finals for their first time. For the remaining team, however, the dream of glory and thousands of dollars in cash prizes lives on.&lt;/p&gt;
+
+&lt;h3 id="overview"&gt;Overview&lt;/h3&gt;
+
+&lt;p&gt;Battlecode is a programming competition (course number: 6.370), in which groups of up to four students program AIs to wage war in a Real-Time-Strategy game-like simulator.  For those of you who are unfamiliar with the competition, here&amp;rsquo;s a small collection of matches from previous years:&lt;/p&gt;
+
+&lt;iframe width="640" height="360" src="http://www.youtube.com/embed/-3r69n6GJ1k
+" frameborder="0" allowfullscreen&gt;&lt;/iframe&gt;
+
+&lt;p&gt;For a brief overview:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Teams of MIT students submit code that will run on their team&amp;rsquo;s robots within the simulator.&lt;/li&gt;
+&lt;li&gt;The AIs are decentralized, meaning that robots do not share global information, and each robot must make its own decision based on the local environment and information nearby robots have radioed in.&lt;/li&gt;
+&lt;li&gt;The game ends when one side captures the objective (changes from year to year), or eliminates the opposing enemy team.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The finals are held in MIT&amp;rsquo;s largest auditorium where hundreds of students gather to watch and cheer on as the two AIs duke it out live on stage, while the teams provide a running commentary on their design and strategy.  Winners have the chance to dip their toes in prize pools of $40k+, there&amp;rsquo;s usually a ton of free food, and the whole spectacle is a ton of fun.&lt;/p&gt;
+
+&lt;p&gt;(If that doesn&amp;rsquo;t give you nerd chills, I don&amp;rsquo;t know what will.)&lt;/p&gt;
+
+&lt;h3 id="why-should-i-care-about-battlecode"&gt;Why should I care about Battlecode?&lt;/h3&gt;
+
+&lt;p&gt;If you&amp;rsquo;re a coder, then no doubt there is some confusion as to the merits of the various competitions on campus as the number increases &lt;a href="http://web.mit.edu/6.470/"&gt;every&lt;/a&gt; &lt;a href="http://mobileapps.mit.edu"&gt;single&lt;/a&gt; &lt;a href="http://iosgames.mit.edu/"&gt;year&lt;/a&gt;.  Understandably, the web and mobile tracks have seen increased uptake, both due to the general startup craze, and in paraphrased words of fellow alumnuis &lt;a href="http://twitter.com/cyen"&gt;@cyen&lt;/a&gt;, working with web/mobile technologies represents &amp;ldquo;real-world&amp;rdquo; vocational training that some students feel they lack.&lt;/p&gt;
+
+&lt;p&gt;While it&amp;rsquo;s true that the AI you write for Battlecode is not going to be the next big webapp or the cool new business entered into MIT&amp;rsquo;s &lt;a href="http://www.mit100k.org/"&gt;$100k competition&lt;/a&gt;, the experience of hacking on a difficult problem with short deadlines will definitely improve your technical chops &amp;ndash; more-so probably than building a pretty CRUD app to win the web-app competition.&lt;/p&gt;
+
+&lt;p&gt;From past winner Albert Ni:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Battlecode is such a valuable experience because it&amp;rsquo;s basically the one software engineering experience you have at MIT where you&amp;rsquo;re forced to make a ton of tradeoff decisions, but the wrong choice in the wrong place can literally be the difference between victory and defeat. Surprisingly, to me Battlecode turned out to be excellent preparation for the startup world because there you also don&amp;rsquo;t have enough time to get every last detail right and thus have to decide where to focus your limited energy, but focusing on the wrong things can doom your company.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Ironically you don&amp;rsquo;t actually get this engineering experience as much in the webapp or mobile app competitions. In both, contestants are expected to quickly cobble together a simple 30-day prototype, but the &amp;ldquo;rubber never really meets the road&amp;rdquo; as teams aren&amp;rsquo;t judged on relevant tangible metrics (and therefore not under pressure to make do-or-die decisions) such as week-over-week growth rate or profits.&lt;/p&gt;
+
+&lt;p&gt;As an example, in our team&amp;rsquo;s bot, I can point to a single commit that was literally the difference between winning the whole competition and being a runner-up: this &lt;strong&gt;&lt;em&gt;untested&lt;/em&gt;&lt;/strong&gt; &lt;a href="https://bitbucket.org/Cixelyn/bcode2012-bot/commits/4c171e0dd486d1f3e030796edac89dc75652ff8c"&gt;35 line hack&lt;/a&gt; was made one hour before the submission deadline as a last ditch effort to counter the one team we knew we would lose to in the finals (on the last day we consistently lost to them in unranked scrimmage matches). There&amp;rsquo;s nothing quite like standing on stage in front of hundreds of people hoping that your untested hack deploys correctly.&lt;/p&gt;
+
+&lt;p&gt;No one writes bug-free (or even pretty) code in Battlecode, but contestants quickly learn how to avoid the catastrophic bugs that singlehandledly lose games.
+They learn to allocate time efficiently, quickly prototype new strategies, and test often (you can sit and theorycraft all you want, but at the end of the day, only wins on the scrimmage server and tournaments count). And all this is done working closely with two or three other classmates under immense time pressures &amp;ndash; a recipe for long nights, heated arguments, and massive merge conflicts.&lt;/p&gt;
+
+&lt;p&gt;These experiences and skills learned through Battlecode are hugely relevant in software engineering, startups, and life in general.&lt;/p&gt;
+
+&lt;h3 id="we-have-awesome-alumni-too"&gt;We have awesome alumni too!&lt;/h3&gt;
+
+&lt;p&gt;If you&amp;rsquo;re still not convinced that Battlecode is the best IAP competition, allow me to point you to its rich history of alumni who later went on to do some amazing things:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;David Greenspan and Aaron Iba, two of the original directors of battlecode cofound a AppJet together (acq. by Google for $10MM), which launched etherpad, still one of the downright most useful web apps I have ever used. Aaron later went on to become a partner at the well-known startup incubator &lt;a href="http://ycombinator.com/"&gt;Y Combinator&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Drew Houston (top 8 battlecode finalist) and Arash Ferdowski (battlecode director) cofounded &lt;a href="https://www.dropbox.com/"&gt;Dropbox&lt;/a&gt; together. A significant percentage of Dropbox&amp;rsquo;s core engineering team are all Battlecode alumns too including Albert Ni, KMod, Zviad M., and Steve Bartel.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;And if you&amp;rsquo;re not a programmer at all, you should still come to watch the matches and listen to the teams discuss strategy. It&amp;rsquo;s definitely a ton more exciting than watching an &lt;a href="http://mitpokerbots.com/"&gt;animated excel graph of numbers&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id="but-java-whine"&gt;But&amp;hellip; JAVA (&lt;em&gt;whine&lt;/em&gt;)&lt;/h3&gt;
+
+&lt;p&gt;There seems to be an increasingly allergic reaction to Java in the hacker community for its verbosity, ceremony, and corporate stooginess (see this &lt;a href="http://stackoverflow.com/questions/186964/java-core-api-anti-patterns-what-is-wrong/891589#891589"&gt;poem&lt;/a&gt;).  The JVM-based nature of Battlecode has certainly drawn much criticism in this regard - especially when MIT&amp;rsquo;s entire computer science curriculum is Python-based. Java&amp;rsquo;s certainly not the coolest language these days.&lt;/p&gt;
+
+&lt;p&gt;You quickly find, however, that the Java necessary to perform well in competition is nothing like anything you&amp;rsquo;ve ever written before. The AI of every individual robot is encapsulated within it&amp;rsquo;s own virtual execution environment, and the computational currency is not execution time, or even memory, but rather &lt;a href="http://en.wikipedia.org/wiki/Java_bytecode"&gt;&lt;em&gt;JVM Bytecodes&lt;/em&gt;&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;What? Bytecodes?&lt;/em&gt; I can already hear some of you say. Hear me out &amp;ndash; this strange limitation has some wonderful merits. Within these confines, contestants are forced to throw away everything they know about computer science and build their own data structures, their own architecture, and their own algorithms from scratch to deal with such constraints. It forces code to be lean; it forces contestants to be creative and continually innovate new heuristics that run in linear or sublinear time; most of all, these things all have to be self-discovered or invented, as there&amp;rsquo;s no immediate book or guide to turn to.&lt;/p&gt;
+
+&lt;p&gt;Being creative and arbitraging the bytecode counters is well within the spirit of the game, leading to some of the most remarkable hacks I&amp;rsquo;ve ever seen. A small oversight in the specs counted &lt;code&gt;java.util.regex&lt;/code&gt; as a fixed-cost. Team Little&amp;rsquo;s &lt;a href="http://assorted.sourceforge.net/battlecode-2007-little/"&gt;2007 entry&lt;/a&gt; exploited this with an impressive &lt;a href="http://assorted.svn.sourceforge.net/viewvc/assorted/battlecode-2007-little/trunk/teams/team022/RobotPlayer.java?revision=1843&amp;amp;view=markup#lt"&gt;regular-expression encoding of dijkstra&amp;rsquo;s algorithm&lt;/a&gt;, allowing them to perform an O(nlogn) algorithm in just O(1) time.  The hole was patched the following year after Little won recognition for the clever hack. Never-the-less, the existing cat and mouse game between the constestants and the devs has lead to an ever-evolving game. For more examples, Steve Arcangeli has a very &lt;a href="http://stevearc.blogspot.com/2011/12/code-snippits_17.html"&gt;detailed post&lt;/a&gt; explaining some of the clever data structures they were able to exploit during the 2011 competition. &lt;/p&gt;
+
+&lt;p&gt;Despite being severely bytecode-limited, you still have to program an AI for a game that is insanely &lt;em&gt;complex&lt;/em&gt;.  Consider that not only do you have to write good heuristics for pathfinding and attack code, but you also need to &lt;em&gt;share&lt;/em&gt; information between robots by broadcasting data packets (as each robot is its own autonomous entity). Thus, in addition to the actual attacking / firing of lasers, there is a second unseen battleground of information warfare. This leads to all sorts of shenanigans. In 2009, teams thought they were being clever by exploiting the fixed cost of &lt;code&gt;Arrays.hashCode()&lt;/code&gt; to hash messages cheaply in O(1) time. But Greg Little went even one step further, looked up the OpenJDK hashCode implementation, and designed a messaging attack that mutated the contents of the array without changing the resulting hash. His bot was able to completely disrupt enemy communication, and in some cases, cause them to overload and stop moving via erroneous messages. Badass.&lt;/p&gt;
+
+&lt;p&gt;So, despite the Java heritage, Battlecode still offers something for everyone &amp;ndash; the hacker dreams up neat ways of executing computations within the confines of the engine; the computer scientist drafts the algorithm to compute on the platform; and the low-level performance engineer optimizes it to make it bytecode efficient.  All the past winners of battlecodes have been amazingly talented hackers that I seriously look up to and respect for their ability.&lt;/p&gt;
+
+&lt;h3 id="to-conclude"&gt;To conclude&lt;/h3&gt;
+
+&lt;p&gt;Having participated 3 consecutive years in Battlecode, I can definitely say that, at least for me, it was the best use of my time during IAP. There&amp;rsquo;s really nothing like four friends moving together into a single dorm room for one month with a bunch of monitors, a ton of ramen, and a battleplan for victory (In that sense, it&amp;rsquo;s probably more &amp;ldquo;startup-y&amp;rdquo; than doing 6.470/6.570).  And despite being a competition, the top teams have always been amazingly generous, offering to share code secrets, tips, and techniques even when I was first a beginner just getting off the ground. Learning from and interacting with some of the best hackers MIT has to offer is quite a humbling experience.&lt;/p&gt;
+
+&lt;p&gt;To any MIT students or prospectives considering Battlecode: find a few friends and dive in! You definitely won&amp;rsquo;t regret it.&lt;/p&gt;
+
+&lt;h3 id="to-read-further"&gt;To read further&lt;/h3&gt;
+
+&lt;p&gt;The brand new &lt;a href="http://www.battlecode.org/contestants/releases/"&gt;2013 game spec&lt;/a&gt; will be released January 7th late afternoon. Meanwhile you can check out the old &lt;a href="https://s3.amazonaws.com/battlecode-releases-2012/docs/specs.html"&gt;2012 spec&lt;/a&gt; to get a feel for the game details.&lt;/p&gt;
+
+&lt;p&gt;In the spirit of Steve Arcangeli&amp;rsquo;s &lt;a href="http://stevearc.blogspot.com/2011/12/battlecode-postmortem-2011.html"&gt;postmortem&lt;/a&gt; on the 2011 winning bot, my next few posts wil be on our 2012 experiences as well as tips, tricks, and techniques relevant to the current battlecode engine. We were fortunate enough to utilize a few of Team Gunface&amp;rsquo;s tricks in the design of our own bot and would love to continue the tradition by writing up a few of our own. (By the way, if you&amp;rsquo;re interested in participating in Battlecode, both of Steve&amp;rsquo;s posts are required reading. One of the only resources out there that really details the thought process behind some of the design while also swapping old war stories).&lt;/p&gt;
+
+&lt;p&gt;I&amp;rsquo;m also going to kick the generousity up a notch and in addition to just writing up code snippets, with the permission of my teams, I&amp;rsquo;ve also open sourced &lt;em&gt;all&lt;/em&gt; of my previous battlecode bots.  In order, they are:&lt;/p&gt;
+
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style="text-align: left"&gt;Year&lt;/th&gt;
+&lt;th style="text-align: left"&gt;ID&lt;/th&gt;
+&lt;th style="text-align: left"&gt;Team Name&lt;/th&gt;
+&lt;th style="text-align: left"&gt;Members&lt;/th&gt;
+&lt;th style="text-align: left"&gt;Repo&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;2010&lt;/td&gt;
+&lt;td style="text-align: left"&gt;#161&lt;/td&gt;
+&lt;td style="text-align: left"&gt;&amp;ldquo;lazer guns pew pew&amp;rdquo;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;Stephen C., Cory L., Kevin L., Sajith W.&lt;/td&gt;
+&lt;td style="text-align: left"&gt;&lt;a href="https://bitbucket.org/Cixelyn/bcode2010"&gt;Bitbucket&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;2011&lt;/td&gt;
+&lt;td style="text-align: left"&gt;#068&lt;/td&gt;
+&lt;td style="text-align: left"&gt;&amp;ldquo;In the Rear with the Gear&amp;rdquo;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;Cory L. Max N. Justin V.&lt;/td&gt;
+&lt;td style="text-align: left"&gt;&lt;a href="https://bitbucket.org/Cixelyn/battlecode2011"&gt;Bitbucket&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: left"&gt;2012&lt;/td&gt;
+&lt;td style="text-align: left"&gt;#047&lt;/td&gt;
+&lt;td style="text-align: left"&gt;&amp;ldquo;fun gamers&amp;rdquo;&lt;/td&gt;
+&lt;td style="text-align: left"&gt;Yanping C., Cory L., Haitao M., Justin V.&lt;/td&gt;
+&lt;td style="text-align: left"&gt;&lt;a href="https://bitbucket.org/Cixelyn/bcode2012-bot"&gt;Bitbucket&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+
+&lt;p&gt;Feel free to browse through the code, though the commenting density is somewhat inconsistent, and a lot of last-minute changes are undocumented and/or inconsistent with the provided documentation. Also, don&amp;rsquo;t read through the commit log if you&amp;rsquo;re easily offended. &lt;/p&gt;
+
+&lt;p&gt;Lastly, if you&amp;rsquo;re interested in sponsoring future battlecode competitions, check out their &lt;a href="http://www.battlecode.org/sponsors/interested/"&gt;sponsorship info&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;Edit: Check out comments from past competitors and devs on the &lt;a href="http://news.ycombinator.com/item?id=5022167"&gt;Hacker News thread&lt;/a&gt;&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+</content>
+  </entry>
+</feed>
