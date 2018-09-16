@@ -1,0 +1,660 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8" /><meta content="yes" name="apple-mobile-web-app-capable" /><meta content="minimum-scale=1.0, width=device-width, maximum-scale=1, user-scalable=no" name="viewport" /><script src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML" async="true"></script><script src="/javascripts/jquery-1.8.2.min.js"></script><script src="/javascripts/bootstrap.min.js"></script><link href="/stylesheets/bootstrap.min.css" rel="stylesheet" /><link href="/stylesheets/bootstrap-responsive.min.css" rel="stylesheet" /><link href="/stylesheets/syntax.css" rel="stylesheet" /><link href="/stylesheets/style.css" rel="stylesheet" /><link href="/favicon.ico" rel="icon" type="image/ico" /><title>Java bytecode hacking for fun and profit</title><meta content="Java bytecode hacking for fun and profit" property="og:title" /><meta content="A brief tutorial on Java bytecode hacking and optimization for Battlecode" name="description" /><meta content="A brief tutorial on Java bytecode hacking and optimization for Battlecode" property="og:description" /><meta content="summary_large_image" name="twitter:card" /><meta content="http://cory.li/bytecode-hacking/jvm-diagram.png" property="og:image" /><meta content="@Cixelyn" name="twitter:site" /><meta content="1398782066" property="fb:admins" /><meta content="Cory's Notes" property="og:site_name" /><meta content="http://cory.li/bytecode-hacking/" property="og:url" /><link href="http://cory.li/bytecode-hacking/" rel="canonical" /><meta content="article" property="og:type" /><script>var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-37457623-1']);
+_gaq.push(['_trackPageview']);
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();</script></head><body><div class="row"><div id="header"></div></div><div class="row"><div class="span3"><div id="sidebar"><img src="/img/header.png" alt="header" /><div class="row"><div class="namebox"><h2 class="name"><a href="/">Cory Li</a></h2><div class="handle"><a href="https://twitter.com/cixelyn">@cixelyn</a></div></div></div><nav><ul class="unstyled nav nav-list"><li><a href="/about.html">About</a></li><li><a href="/">Posts</a></li><li><a href="/feed.xml">Feed</a></li><li><a href="http://code.cory.li">Code</a></li></ul></nav></div></div><div class="span9"><div id="content"><article><header><h1><a href="#">Java bytecode hacking for fun and profit</a></h1><time datetime="2014-01-06T12:59:00-08:00">Written on Monday, January  6, 2014</time></header><p>With the <a href="http://battlecode.org">2014 season of battlecode</a> starting tomorrow, I figured now would be a good as time as any to finally write up my notes on bytecode hacking.  If you&rsquo;re unfamiliar with Battlecode, a <a href="http://cory.li/battlecode-intro/">good introduction is my previous post</a> (tldr: it&rsquo;s an intense open-to-all programming competition where teams write AIs for virtual robot armies).</p>
+
+<p>You might be wondering what bytecodes have to do with battlecode. Well, one of the most intriguing parts of the battlecode engine is the cost model applied to each team&rsquo;s AI. In order to hard limit each team&rsquo;s total computation, yet guarantee equal computation resources to each team, each team is given a bytecode limit, and their code is instrumented and allowed to run only up to that limit before it is halted. This is pretty counter-intuitive for people who are used to more traditional time-based computational limits.</p>
+
+<p>For those unfamiliar with bytecodes, they are the atomic instructions that run on the JVM &ndash; your Java source compiles down to them, similar to assembly. The tricky part is that Battlecode keeps this bytecode limit low &ndash; typically in the 6-10k range. To give a rough sense of scale, an A* search through a small 8x8 grid can easily blow through the whole computational budget; Battlecode maps, however, can be anywhere from 20x20 to 60x60 tiles in size.</p>
+
+<p>This bytecode limit, then, is actually quite interesting, as it forces teams to come up with novel and creative ways to solve problems rather than just implementing well-known algorithms. Unfortunately, it also serves as one of the major contributors to a relatively steep learning curve. My goal with this post is to elucidate just what is happening under the hood, as well as provide some tips and tricks for teams to squeeze every last drop of performance out their AIs.</p>
+
+<p>As a disclaimer, these optimizations should be performed last, once the majority of your AI framework is built; writing good code is better than optimizing incorrect or algorithmically poor code. But that being said, when you&rsquo;re tight for bytecodes, any small optimization can very well mean the difference between victory and defeat.</p>
+
+<hr>
+
+<p>When searching for resources on the net, it becomes apparent that bytecode optimization is something of a lost art &ndash; any article on the topic comes from pre-2000, before the HotSpot JIT compiler was introduced in Java 1.3. With JIT compilation and also modern obfuscation engines like proguard, there hasn&rsquo;t been much reason to pay attention to things like emitted bytecode or total class file size. Battlecode is somewhat unique as contestants are required to turn in their source, rather than compiled code (as students can take it as a course and count it for university credits). Thus, we must turn to these old techniques to to control emitted bytecodes from high-level source.</p>
+
+<p>There are some who may scoff at bytecode optimization, reasoning that it&rsquo;s a worthless skill for modern computer science, especially those working in high-level languages. Understanding what the compiler emits however is a skill still very much alive and well in embedded programming, FPGA programming, and other performance-oriented disciplines. In FPGA programming, one must have a mental model of what hardware will be synthesized <em>before</em> writing the code. In  embedded programming,  the frequency of software-based signal generation is limited by instruction count in the loop body.</p>
+
+<p>Honestly, most of the reward of bytecode optimization comes from being able to play with the battle-tested JVM architecture in a particularly novel way. It&rsquo;s incredibly fun, especially when it gives you the edge against rival teams.What more justification does an interested hacker need?</p>
+
+<h3 id="jvm-bytecode-basics">JVM Bytecode Basics</h3>
+
+<p>To understand how to work around a bytecode limit, we must first understand the JVM&rsquo;s execution model.  The inner workings of the JVM are <a href="http://blog.jamesdbloom.com/JVMInternals.html">well documented elsewhere on the net</a> &ndash; feel free to skip this section if you&rsquo;re already familiar, but for those who aren&rsquo;t, here&rsquo;s a brief overview of the important parts.</p>
+
+<p>The JVM is a relatively simple stack-based architecture with a fairly comprehensive instruction set allowing for manipulation of both primitives and full objects. An atomic instruction is called a bytecode, roughly equivalent to a single assembly instruction in native code. These bytecodes are stored as a stream within the compiled Java .class file, and are executed within the context of a stack frame.</p>
+
+<p>Each stack frame contains:</p>
+
+<ol>
+<li>The current operand stack</li>
+<li>An array of local variables</li>
+<li>A reference to the constants pool of the class of the current method</li>
+</ol>
+
+<p><img src="/bytecode-hacking/jvm-diagram.png" alt="JVM Stack Frame Overview" /></p>
+
+<p>Bytecodes perform computation by pushing and popping values onto the current frame&rsquo;s operand stack. If a method is invoked, a brand new frame is created and pushed on top of the execution stack. Upon method completion, the frame is destroyed and the return value is passed to the previous frame.</p>
+
+<p>The easiest way to understand bytecode execution is to see an example. Given the following Java code:</p>
+<div class="highlight"><pre class="highlight java"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="kd">public</span> <span class="kt">int</span> <span class="nf">sumSquares</span><span class="o">(</span><span class="kt">int</span> <span class="n">a</span><span class="o">,</span> <span class="kt">int</span> <span class="n">b</span><span class="o">)</span> <span class="o">{</span>
+  <span class="kt">int</span> <span class="n">rv</span> <span class="o">=</span> <span class="n">a</span><span class="o">*</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="o">*</span><span class="n">b</span><span class="o">;</span>
+  <span class="k">return</span> <span class="n">rv</span><span class="o">;</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div>
+<p>Lets disassemble it and see how it works.  The standard Java SDK conveniently comes with the <code>javap</code> disassembler. <code>javap -c Main</code> will give you the bytecode stream for <code>Main.class</code> in the same directory, which I&rsquo;ve (overly)annotated<sup id="fnref1"><a href="#fn1">1</a></sup> to explain how it works:</p>
+<div class="highlight"><pre class="highlight plaintext"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="rouge-code"><pre>public int sumSquares(int, int);
+  Code:
+     0: iload_1   // push local variable 1 (int a) onto the stack
+     1: iload_1   // push int a onto the stack again
+     2: imul      // pop two ints, multiply them, then push the result onto the stack
+     3: iload_2   // push local variable 2 (int b) onto the stack
+     4: iload_2   // push int b onto the stack again
+     5: imul      // pop two ints, multiply, and push back the result
+     6: iadd      // pop the two results, add them, and push back the result
+     7: istore_3  // store the result to local variable 3 (rv)
+     8: iload_3   // load local variable 3
+     9: ireturn   // return what's on the stack (rv)
+</pre></td></tr></tbody></table></code></pre></div>
+<p>Note how the assignment of local variables to array positions is determined at compile time and baked directly into the byte code stream. The two parameters are passed in as positions 1 and 2 on the locals array while <code>rv</code> has been assigned position 3 on the array. In fact, the bytecode output from the Java source was fairly predictable &ndash; we&rsquo;ll use this fact to our advantage later on.</p>
+
+<p>Here&rsquo;s another simple example that contains branching:</p>
+<div class="highlight"><pre class="highlight java"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="kd">public</span> <span class="kt">int</span> <span class="nf">sign</span><span class="o">(</span><span class="kt">int</span> <span class="n">a</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">if</span><span class="o">(</span><span class="n">a</span><span class="o">&lt;</span><span class="mi">0</span><span class="o">)</span> <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="o">;</span>
+  <span class="k">else</span> <span class="nf">if</span> <span class="o">(</span><span class="n">a</span><span class="o">&gt;</span><span class="mi">0</span><span class="o">)</span> <span class="k">return</span> <span class="mi">1</span><span class="o">;</span>
+  <span class="k">else</span> <span class="k">return</span> <span class="mi">0</span><span class="o">;</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div><div class="highlight"><pre class="highlight plaintext"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="rouge-code"><pre>public int sign(int);
+  Code:
+     0: iload_1
+     1: ifge          6
+     4: iconst_m1
+     5: ireturn
+     6: iload_1
+     7: ifle          12
+    10: iconst_1
+    11: ireturn
+    12: iconst_0
+    13: ireturn
+</pre></td></tr></tbody></table></code></pre></div>
+<p>As you may have noticed, the numbers on the left are not actually instruction count, but rather the instruction&rsquo;s byte-offset from the beginning of the stream. The jump targets for <code>ifge</code> and <code>ifle</code> are specified in terms of these offsets.</p>
+
+<p>With these basics in mind, we can now take a look at how to optimize algorithms from within the Battlecode engine.</p>
+
+<h3 id="bytecode-counting">Bytecode Counting</h3>
+
+<p>The current generation of <a href="https://github.com/battlecode/battlecode-2013-server/blob/master/src/main/battlecode/engine/instrumenter/RoboMethodTree.java">Battlecode&rsquo;s instrumentation engine</a> uses the <a href="http://asm.ow2.org/">OW2 ASM framework</a> for bytecode counting. Before a team&rsquo;s code is executed, the engine walks through the generated program tree, and computes the bytecode cost of each <a href="http://en.wikipedia.org/wiki/Basic_block">basic block</a>. At each block&rsquo;s exit, a checkpoint is injected with the block&rsquo;s total cost.  During live execution, these checkpoints increment the AI&rsquo;s internal total bytecode counter. If at any checkpoint the running tally exceeds <code>GameConstants.BYTECODE_LIMIT</code>, the AI&rsquo;s execution is halted and execution of the next robot&rsquo;s AI begins. This essentially means that the executing robot&rsquo;s turn is skipped &ndash; preventing it from moving or firing its weapons if it hadn&rsquo;t already done so that turn, which can be devastating in combat.</p>
+
+<p>The system&rsquo;s design allows the engine to simulate hundreds of AIs efficiently, with only moderate overhead. Earlier versions of battlecode ran on a custom JVM implementation written in Java, and while it could instrument on a per-instruction-basis, was a lot slower.</p>
+
+<p><strong>The biggest takeaway is that you are penalized <em>only</em> for the total number of bytecodes you use.</strong></p>
+
+<p>A common mistake when looking at disassembled code is that the <em>size</em> of the bytecode does not matter: <code>iload_0</code> (0x1a) which is a one byte special compact instruction for loading the integer from local variable 0, is the same cost as the the two byte <code>iload #5</code> (the <code>iload</code> opcode 0x15, followed by the argument 0x05):</p>
+<div class="highlight"><pre class="highlight plaintext"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre>0: iload_0          0: iload #5
+1: return           2: return
+</pre></td></tr></tbody></table></code></pre></div>
+<p>When checking output from <code>javap</code> or other disassemblers, you must remember to renumber from byte-offset to instruction-offset in order to know your total cost.</p>
+
+<p>The <em>complexity</em> of the bytecode instruction doesn&rsquo;t matter either. As an example, here are two equivalent statements that emit two different bytecodes:</p>
+<div class="highlight"><pre class="highlight java"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="k">if</span><span class="o">(</span><span class="n">choice</span> <span class="o">==</span> <span class="mi">1</span><span class="o">)</span> <span class="n">methodA</span><span class="o">();</span>
+<span class="k">else</span> <span class="nf">if</span><span class="o">(</span><span class="n">choice</span> <span class="o">==</span> <span class="mi">2</span><span class="o">)</span> <span class="n">methodB</span><span class="o">();</span>
+<span class="k">else</span> <span class="nf">if</span><span class="o">(</span><span class="n">choice</span> <span class="o">==</span> <span class="mi">3</span><span class="o">)</span> <span class="n">methodC</span><span class="o">();</span>
+<span class="k">else</span> <span class="nf">if</span><span class="o">(</span><span class="n">choice</span> <span class="o">==</span> <span class="mi">4</span><span class="o">)</span> <span class="n">methodD</span><span class="o">();</span>
+</pre></td></tr></tbody></table></code></pre></div>
+<p>while compiles to<sup id="fnref2"><a href="#fn2">2</a></sup>:</p>
+<div class="highlight"><pre class="highlight plaintext"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+</pre></td><td class="rouge-code"><pre> 0: aload_0
+ 1: getfield      #45                 // Field choice:I
+ 4: iconst_1
+ 5: if_icmpne     15
+ 8: aload_0
+ 9: invokevirtual #47                 // Method methodA:()V
+12: goto          57
+15: aload_0
+16: getfield      #45                 // Field choice:I
+19: iconst_2
+20: if_icmpne     30
+23: aload_0
+24: invokevirtual #49                 // Method methodB:()V
+27: goto          57
+30: aload_0
+31: getfield      #45                 // Field choice:I
+34: iconst_3
+35: if_icmpne     45
+38: aload_0
+39: invokevirtual #51                 // Method methodC:()V
+42: goto          57
+45: aload_0
+46: getfield      #45                 // Field choice:I
+49: iconst_4
+50: if_icmpne     57
+53: aload_0
+54: invokevirtual #53                 // Method methodD:()V
+</pre></td></tr></tbody></table></code></pre></div>
+<p>and the same expression written as a switch statement:</p>
+<div class="highlight"><pre class="highlight java"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+</pre></td><td class="rouge-code"><pre><span class="k">switch</span><span class="o">(</span><span class="n">choice</span><span class="o">)</span> <span class="o">{</span>
+<span class="k">case</span> <span class="mi">1</span><span class="o">:</span>
+  <span class="n">methodA</span><span class="o">();</span>
+  <span class="k">break</span><span class="o">;</span>
+<span class="k">case</span> <span class="mi">2</span><span class="o">:</span>
+  <span class="n">methodB</span><span class="o">();</span>
+  <span class="k">break</span><span class="o">;</span>
+<span class="k">case</span> <span class="mi">3</span><span class="o">:</span>
+  <span class="n">methodC</span><span class="o">();</span>
+  <span class="k">break</span><span class="o">;</span>
+<span class="k">case</span> <span class="mi">4</span><span class="o">:</span>
+  <span class="n">methodD</span><span class="o">();</span>
+  <span class="k">break</span><span class="o">;</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div><div class="highlight"><pre class="highlight plaintext"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+</pre></td><td class="rouge-code"><pre> 0: aload_0
+ 1: getfield      #45                 // Field choice:I
+ 4: tableswitch   { // 2 to 6
+               2: 40
+               3: 47
+               4: 54
+               5: 65
+               6: 61
+         default: 65
+    }
+40: aload_0
+41: invokevirtual #47                 // Method methodA:()V
+44: goto          65
+47: aload_0
+48: invokevirtual #49                 // Method methodB:()V
+51: goto          65
+54: aload_0
+55: invokevirtual #51                 // Method methodC:()V
+58: goto          65
+61: aload_0
+62: invokevirtual #53                 // Method methodD:()V
+</pre></td></tr></tbody></table></code></pre></div>
+<p>Notice how the if-else statements emit sequential <code>if_icmpne</code> instructions which much be evaluated in order, while the switch statement emits a single <code>lookupswitch</code><sup id="fnref3"><a href="#fn3">3</a></sup> instruction that will jump directly to the correct block. It is to your advantage to use complex instructions.</p>
+
+<h3 id="loop-optimizations">Loop Optimizations</h3>
+
+<p>With these general ideas in mind, we can begin to explore more advanced optimization techniques. When optimizing bytecodes, our primary goal is to reduce the total instruction count to a bare minimum. We&rsquo;re lucky in that we don&rsquo;t have to benchmark to determine performance &ndash; we only have to count the total number of instructions<sup id="fnref4"><a href="#fn4">4</a></sup>. The easiest way to illustrate optimization is to walk through a complete example of optimizing a tight loop.</p>
+
+<p>Lets begin with a hypothetical controller class that encapsulates an array of objects that we care about, say <code>enemy_robots</code>. We want to build a method called <code>scanAll</code> that will iterate through all the enemy robots one by one and call the <code>scan</code> method on each.</p>
+<div class="highlight"><pre class="highlight java"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre></td><td class="rouge-code"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Controller</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="n">RobotInfo</span><span class="o">[]</span> <span class="n">enemy_robots</span><span class="o">;</span>
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">scanAll</span><span class="o">()</span> <span class="o">{</span>
+    <span class="cm">/* code to iterate through enemey_robots and scan them */</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div>
+<p>Since Java 5, there has been an easy way to write these for-each loops, which will do nicely for our first pass:</p>
+<div class="highlight"><pre class="highlight java"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="k">for</span><span class="o">(</span><span class="n">RobotInfo</span> <span class="n">rinfo</span> <span class="o">:</span> <span class="n">enemy_robots</span><span class="o">)</span> <span class="o">{</span>
+  <span class="n">rinfo</span><span class="o">.</span><span class="na">scan</span><span class="o">();</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div>
+<p>I&rsquo;ve done the following things to the below disassembly &ndash; I&rsquo;ve heavily annotated each opcode, and I&rsquo;ve also <em>renumbered</em> the indices given from <code>javap</code> from a byte-offset to an instruction index (as the instruction count is what we are penalized for).</p>
+<div class="highlight"><pre class="highlight plaintext"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+</pre></td><td class="rouge-code"><pre>aload_0                  // Variable 0 (the "this" object reference)
+getfield      #14        // Field enemy_robots:[Lbytecodetests/RobotInfo;
+dup                      // Duplicates the last object on the stack (enemy_robots)
+astore        4          // locals[4] = enemy_robots
+arraylength
+istore_3                 // locals[3] = enemy_robots.length
+iconst_0                 // loads the value 0 onto the stack
+istore_2                 // locals[2] = 0 (or the loop index)
+goto          17         // LOOP BEGINS HERE:
+aload         4
+iload_2
+aaload                   // loads index (locals[2]) of enemy_robots
+astore_1                 // locals[1] = enemy_robots[index]
+aload_1
+invokevirtual #21        // Method bytecodetests/RobotInfo.scan:()V
+iinc          2, 1       // locals[2]++
+iload_2
+iload_3
+if_icmplt     10         // if index &lt; enemyrobots.length, jump to instruction 10
+</pre></td></tr></tbody></table></code></pre></div>
+<p>In the above disassembly, the compiler has assigned the following variables into the locals array as such:</p>
+
+<ol>
+<li>variable <code>rinfo</code></li>
+<li>implicit loop index</li>
+<li><code>enemy_robots.length</code></li>
+<li><code>enemy_robots</code></li>
+</ol>
+
+<p>The zeroth position is special &ndash; it&rsquo;s almost always <code>this</code>, that is, the current enclosing object. We&rsquo;ll see later why that is important.</p>
+
+<p>Our main loop body is from instruction 10 to instruction 19, a total size of 10 bytecodes. So our total bytecode count for this routine is the overhead (12) plus the loop body (10) times the number of iterations. Assuming that the number of iterations is large, how can we reduce this cost? One way is to write the loop in a more old fashioned way:</p>
+<div class="highlight"><pre class="highlight java"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="kt">int</span> <span class="n">length</span> <span class="o">=</span> <span class="n">enemy_robots</span><span class="o">.</span><span class="na">length</span><span class="o">;</span>
+<span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">length</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+  <span class="n">enemy_robots</span><span class="o">[</span><span class="n">i</span><span class="o">].</span><span class="na">scan</span><span class="o">();</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div>
+<p>Note that we pre-compute <code>length</code> so that we don&rsquo;t incur the cost of computing <code>enemy_robots.length</code> every loop iteration (doing so would be an extra <code>aload</code>, <code>getfield</code> and <code>arraylength</code> per loop instead of a single <code>iload</code> call). The emitted byte code is below, again annotated and re-indexed:</p>
+<div class="highlight"><pre class="highlight plaintext"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+</pre></td><td class="rouge-code"><pre>aload_0
+getfield      #16     // Field enemy_robots:[Lbytecodetests/RobotInfo;
+arraylength
+istore_1
+iconst_0
+istore_2
+goto          14      // LOOP BEGINS HERE:
+aload_0
+getfield      #16     // Field enemy_robots:[Lbytecodetests/RobotInfo;
+iload_2
+aaload
+invokevirtual #23     // Method bytecodetests/RobotInfo.scan:()V
+iinc          2, 1
+iload_2
+iload_1
+if_icmplt     8
+</pre></td></tr></tbody></table></code></pre></div>
+<p>In this example, the compiler has actually only assigned three local variables:</p>
+
+<ul>
+<li>locals[0]: the <code>this</code> reference</li>
+<li>locals[1]: the precomputed array-length <code>length</code></li>
+<li>locals[2]: the loop index <code>i</code></li>
+</ul>
+
+<p>The total loop comes out to 9 bytecodes per iteration. We saved exactly 1 bytecode for increased code complexity. Sadistic, isn&rsquo;t it?  The saved instruction comes from not having to <code>astore</code>, <code>aload</code> the extra local variable <code>rinfo</code> that was required in the for-each example. We did however lose a bytecode having to <code>getfield</code> the implicit class-variable <code>enemey_robots</code>. Lets try to recover it.</p>
+
+<h3 id="pulling-things-into-local-scope">Pulling things into local scope</h3>
+
+<p>In our above example, because <code>enemy_robots</code> is actually a class-level variable, in order to reference <code>enemy_robots</code>, the implicit <code>this</code> must be pushed onto the stack first.</p>
+
+<p>Each access thus requires an <code>aload_0</code> followed by a <code>getfield</code>. If we instead assign <code>enemy_robots</code> to a local variable, it becomes a single bytecode <code>aload #x</code>, grabbed directly from local variable array.  So let&rsquo;s pay the overhead cost to bring <code>enemy_robots</code> down into local scope and rewrite the loop:</p>
+<div class="highlight"><pre class="highlight java"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="n">RobotInfo</span><span class="o">[]</span> <span class="n">local_enemy_robots</span> <span class="o">=</span> <span class="n">enemy_robots</span><span class="o">;</span>
+<span class="kt">int</span> <span class="n">length</span> <span class="o">=</span> <span class="n">local_enemy_robots</span><span class="o">.</span><span class="na">length</span><span class="o">;</span>
+<span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">length</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+  <span class="n">local_enemy_robots</span><span class="o">[</span><span class="n">i</span><span class="o">].</span><span class="na">scan</span><span class="o">();</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div>
+<p>Again, for additional complexity, we save another bytecode!<sup id="fnref5"><a href="#fn5">5</a></sup> Can we do even better?</p>
+
+<h3 id="comparisons-against-zero">Comparisons against zero</h3>
+
+<p>It turns out we can actually save one additional bytecode if we rewrite the entire loop structure as follows:</p>
+<div class="highlight"><pre class="highlight java"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="n">local_enemy_robots</span><span class="o">.</span><span class="na">length</span><span class="o">;</span> <span class="o">--</span><span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="o">;)</span> <span class="o">{</span>
+  <span class="n">local_enemy_robots</span><span class="o">[</span><span class="n">i</span><span class="o">].</span><span class="na">scan</span><span class="o">();</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div><div class="highlight"><pre class="highlight plaintext"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre></td><td class="rouge-code"><pre>aload_1
+arraylength
+istore_2
+goto          9
+aload_1
+iload_2
+aaload
+invokevirtual #32      // Method bytecodetests/RobotInfo.scan:()V
+iinc          2, -1
+iload_2
+ifge          5
+</pre></td></tr></tbody></table></code></pre></div>
+<p>Because the loop now decrements from the array length to zero, our loop termination conditional is a check against zero, which java has a special bytecode for: <code>ifge</code>. This means that we only have to push one number onto the stack instead of the two required for <code>if_icmplt</code>, cutting out an <code>iload</code>. This now brings us down to 7 bytecodes!</p>
+
+<h3 id="putting-it-all-together">Putting it all together</h3>
+
+<p>The following table shows the loop bodies of each step of our optimization with the extraneous instruction bolded:</p>
+
+<table><thead>
+<tr>
+<th style="text-align: right"></th>
+<th style="text-align: left">for-each</th>
+<th style="text-align: left">for-index</th>
+<th style="text-align: left">with-locals</th>
+<th style="text-align: left">reversed</th>
+</tr>
+</thead><tbody>
+<tr>
+<td style="text-align: right">1</td>
+<td style="text-align: left">aload</td>
+<td style="text-align: left">aload_0</td>
+<td style="text-align: left">aload_1</td>
+<td style="text-align: left">aload_1</td>
+</tr>
+<tr>
+<td style="text-align: right">2</td>
+<td style="text-align: left">iload_2</td>
+<td style="text-align: left"><strong>getfield</strong></td>
+<td style="text-align: left">iload_2</td>
+<td style="text-align: left">iload_2</td>
+</tr>
+<tr>
+<td style="text-align: right">3</td>
+<td style="text-align: left">aaload</td>
+<td style="text-align: left">iload_2</td>
+<td style="text-align: left">aaload</td>
+<td style="text-align: left">aaload</td>
+</tr>
+<tr>
+<td style="text-align: right">4</td>
+<td style="text-align: left"><strong>astore_1</strong></td>
+<td style="text-align: left">aaload</td>
+<td style="text-align: left">invokevirtual</td>
+<td style="text-align: left">invokevirtual</td>
+</tr>
+<tr>
+<td style="text-align: right">5</td>
+<td style="text-align: left"><strong>aload_1</strong></td>
+<td style="text-align: left">invokevirtual</td>
+<td style="text-align: left">iinc</td>
+<td style="text-align: left">iinc</td>
+</tr>
+<tr>
+<td style="text-align: right">6</td>
+<td style="text-align: left">invokevirtual</td>
+<td style="text-align: left">iinc</td>
+<td style="text-align: left">iload_2</td>
+<td style="text-align: left">iload_2</td>
+</tr>
+<tr>
+<td style="text-align: right">7</td>
+<td style="text-align: left">iinc</td>
+<td style="text-align: left">iload_2</td>
+<td style="text-align: left"><strong>iload_1</strong></td>
+<td style="text-align: left">ifge</td>
+</tr>
+<tr>
+<td style="text-align: right">8</td>
+<td style="text-align: left">iload_2</td>
+<td style="text-align: left">iload_1</td>
+<td style="text-align: left">if_icmplt</td>
+<td style="text-align: left"></td>
+</tr>
+<tr>
+<td style="text-align: right">9</td>
+<td style="text-align: left">iload_3</td>
+<td style="text-align: left">if_icmplt</td>
+<td style="text-align: left"></td>
+<td style="text-align: left"></td>
+</tr>
+<tr>
+<td style="text-align: right">10</td>
+<td style="text-align: left">if_icmplt</td>
+<td style="text-align: left"></td>
+<td style="text-align: left"></td>
+<td style="text-align: left"></td>
+</tr>
+</tbody></table>
+
+<p>To recap, just by tweaking and reorganizing the structure of the loop itself, we managed to reduce overhead instruction count by 30%. And in tight loops that run hundreds/thousands of times, we bank appreciable bytecode savings that we then can spend on more critical code paths &ndash; like running a pathfinding algorithm several steps further, or processing a few more enemies in a weapons targeting system.</p>
+
+<h3 id="generating-gotos">Generating GOTOs</h3>
+
+<p>Any discussion of loop optimization wouldn&rsquo;t be complete without a brief discussion of loop termination. In Java, similarly to most languages, you can early terminate a loop with the <code>break</code> keyword, or skip a loop iteration with the <code>continue</code> keyword.  It&rsquo;s the closest thing we have in Java to a general purpose <code>goto</code> statement.</p>
+<div class="highlight"><pre class="highlight java"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="k">while</span><span class="o">(</span><span class="kc">true</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">if</span><span class="o">(</span><span class="n">condition_one</span><span class="o">)</span> <span class="k">continue</span><span class="o">;</span>
+  <span class="k">if</span><span class="o">(</span><span class="n">condition_two</span><span class="o">)</span> <span class="k">break</span><span class="o">;</span>
+  <span class="cm">/* code */</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div>
+<p>By putting those two conditional checks early, we can force the compiler to generate a <code>goto</code> instruction and prevent wasteful execution of the loop body.</p>
+
+<p>In Java, you can also break out of two nested loops by labeling the first loop and using a labeled break statement as follows:</p>
+<div class="highlight"><pre class="highlight java"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="nl">outerloop:</span> <span class="k">while</span><span class="o">(</span><span class="n">first_condition</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">while</span><span class="o">(</span><span class="n">second_condition</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">if</span><span class="o">(</span><span class="n">third_condition</span><span class="o">)</span> <span class="k">break</span> <span class="n">outer</span> <span class="n">loop</span><span class="o">;</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div>
+<p>This neat trick can help prevent the need for a sentinel value in the outer loop. A corresponding trick that most people <em>don&rsquo;t</em> know is that you can actually break out of <em>arbitrary</em> labeled blocks. This gives you an ugly but capable forward-jumping &ldquo;goto&rdquo; statement:</p>
+<div class="highlight"><pre class="highlight java"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="rouge-code"><pre><span class="nl">label1:</span> <span class="o">{</span>
+  <span class="nl">label2:</span> <span class="o">{</span>
+    <span class="cm">/* code */</span>
+    <span class="k">if</span><span class="o">(</span><span class="n">first_conditional</span><span class="o">)</span> <span class="k">break</span> <span class="n">label2</span><span class="o">;</span>
+    <span class="k">if</span><span class="o">(</span><span class="n">second_conditional</span><span class="o">)</span> <span class="k">break</span> <span class="n">label1</span><span class="o">;</span>
+  <span class="o">}</span>
+  <span class="cm">/* more code */</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div>
+<p>As a disclaimer, I would never, ever, ever use this in normal day-to-day code, but if you need to squeeze some extra bytecodes in a pinch, it&rsquo;ll do.</p>
+
+<h3 id="closing-thoughts">Closing Thoughts</h3>
+
+<p>My hope is that this post has given you some insight into how the Java compiler emits bytecodes and how you can use that to your advantage to reduce your total instruction count.</p>
+
+<p>In the 2012 Battlecode competition, we used the above techniques extensively in writing what we called the <a href="https://bitbucket.org/Cixelyn/bcode2012-bot/src/69758a5c59a00545923a99f914c580898d6aa88e/teams/ducks/HibernationSystem.java">hibernation system</a>, a very tight loop that consumed only 69 bytecodes per turn.  In that year&rsquo;s game spec, an AI&rsquo;s unused bytecodes could be directly refunded for energy at the end of the turn, so the hibernation system was effectively a low-power state for our AIs that allowed us to stockpile energy.  This, in turn, allowed our army to sustain roughly 2x more robots than normally possible with typical (1000-2000) bytecode usage, giving us the edge in combat.</p>
+
+<p>It can&rsquo;t be stressed enough, however, that many of these optimizations should be done only <em>after</em> all other avenues have been exhausted. There are a large number of algorithmic and data structure tricks to perform which may yield even greater savings, some of which are discussed in our <a href="https://bitbucket.org/Cixelyn/bcode2012-bot/downloads/strategyreport.pdf">winning 2012 strategy report</a>. I hope to write up these as a stand-alone post at some point, as they are somewhat out of the scope of this article. But for the curious, our strategy report, combined with <a href="http://stevearc.blogspot.com/2011/12/code-snippits_17.html">Steve Arcangeli&rsquo;s 2011 code snippet notes</a>, should provide a reasonable background to the topic.</p>
+
+<p>To the teams competing in the 2014 competition: best of luck, and don&rsquo;t forget to have fun!</p>
+
+<div class="footnotes">
+<hr>
+<ol>
+
+<li id="fn1">
+<p>When looking through Java disassembly, it&rsquo;s helpful to have a quick reference. Wikipedia has page on <a href="http://en.wikipedia.org/wiki/Java_bytecode_instruction_listings">Java byte codes and their operations</a> which is useful for at-a-glance lookup. The more detailed (and official) description of the bytecode operations can be found in <a href="http://docs.oracle.com/javase/specs/jvms/se7/html/jvms-6.html">Oracle&rsquo;s JVM reference</a>.&nbsp;<a href="#fnref1">&#8617;</a></p>
+</li>
+
+<li id="fn2">
+<p>When reading the output of <code>javap</code>, the comments following an <code>invokevirtual</code> command denote the signature of the method being invoked. The format is the list of arguments types in parenthesis followed by the return value type. The types are shortened to their one letter code to remain compact.&nbsp;<a href="#fnref2">&#8617;</a></p>
+
+<table><thead>
+<tr>
+<th>Source Declaration</th>
+<th>Method Descriptor</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>void m(int i, float f)</code></td>
+<td><code>(IF)V</code></td>
+</tr>
+<tr>
+<td><code>int[] m(int i, String s)</code></td>
+<td><code>(ILjava/lang/String;)[I</code></td>
+</tr>
+</tbody></table>
+</li>
+
+<li id="fn3">
+<p>As an aside, for speed, the Bytecode format actually has two types of table-based jumps: <code>lookupswitch</code> and <code>tableswitch</code>.  If the indices are roughly sequential, the compiler will pack them into a <code>lookupswitch</code> table in which the parameter into the switch statement is the table offset, giving an O(1) lookup of the jump address. If the indices are far apart / non-sequential however, packing them into a fixed-interval table would be very wasteful, and so the <code>lookupswitch</code> table stores both the case value and the jump offset, allowing the JVM to binary search through the possible case statements for the correct jump vector.&nbsp;<a href="#fnref3">&#8617;</a></p>
+
+<p>The best thing of course is that despite <code>lookupswitch</code> having O(1) complexity and <code>tableswitch</code> having O(log <em>n</em>) complexity, in battlecode they&rsquo;re equivalent because we&rsquo;re only counting the bytecodes, and not the true computational cost! So you don&rsquo;t have to worry about creating compact case statements! :D</p>
+</li>
+
+<li id="fn4">
+<p>That&rsquo;s not to say benchmarking isn&rsquo;t important, as it&rsquo;s often one of the fastest ways to profile new routines or survey where your biggest bytecode expenses are. The engine conveniently provides <code>Clock.getBytecodeNum()</code> to check your usage for the current turn.&nbsp;<a href="#fnref4">&#8617;</a></p>
+
+<p>If you&rsquo;re benchmarking large routines or your entire AI framework, you&rsquo;ll want to make sure you account for bytecode overage due to turn-skipping. In our <a href="https://bitbucket.org/Cixelyn/bcode2012-bot/src/69758a5c59a00545923a99f914c580898d6aa88e/teams/ducks/BaseRobot.java?at=default#cl-220">main framework</a>, one of the first things we wrote was a method to get true bytecode count so we could accurately gauge performance. The following formula should give the correct count:</p>
+<div class="highlight"><pre class="highlight java"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="kt">int</span> <span class="n">byteCount</span> <span class="o">=</span>
+    <span class="o">(</span><span class="n">GameConstants</span><span class="o">.</span><span class="na">BYTECODE_LIMIT</span><span class="o">-</span><span class="n">executeStartByte</span><span class="o">)</span> <span class="o">+</span>
+    <span class="o">(</span><span class="n">currRound</span><span class="o">-</span><span class="n">executeStartTime</span><span class="o">-</span><span class="mi">1</span><span class="o">)</span> <span class="o">*</span> <span class="n">GameConstants</span><span class="o">.</span><span class="na">BYTECODE_LIMIT</span> <span class="o">+</span>
+    <span class="n">Clock</span><span class="o">.</span><span class="na">getBytecodeNum</span><span class="o">();</span>
+</pre></td></tr></tbody></table></code></pre></div></li>
+
+<li id="fn5">
+<p>In this example, we only access <code>enemy_robots</code> a single time in the loop body &ndash; in a real-world example, this technique has the potential to realize even greater savings, especially for member variables that are accessed often.&nbsp;<a href="#fnref5">&#8617;</a></p>
+</li>
+
+</ol>
+</div>
+</article><hr /><div id="footer"><a href="/" class="back">&larr; back</a><div id="tags">Tagged: <a href="/tags/battlecode/">#battlecode</a>, <a href="/tags/coding/">#coding</a>, <a href="/tags/java/">#java</a></div></div></div></div></div></body></html>

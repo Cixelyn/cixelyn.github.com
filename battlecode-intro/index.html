@@ -1,0 +1,136 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8" /><meta content="yes" name="apple-mobile-web-app-capable" /><meta content="minimum-scale=1.0, width=device-width, maximum-scale=1, user-scalable=no" name="viewport" /><script src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML" async="true"></script><script src="/javascripts/jquery-1.8.2.min.js"></script><script src="/javascripts/bootstrap.min.js"></script><link href="/stylesheets/bootstrap.min.css" rel="stylesheet" /><link href="/stylesheets/bootstrap-responsive.min.css" rel="stylesheet" /><link href="/stylesheets/syntax.css" rel="stylesheet" /><link href="/stylesheets/style.css" rel="stylesheet" /><link href="/favicon.ico" rel="icon" type="image/ico" /><title>Battlecode: MIT's longest-running hardcore programming competition</title><meta content="Battlecode: MIT's longest-running hardcore programming competition" property="og:title" /><meta content="summary_large_image" name="twitter:card" /><meta content="http://cory.li/img/banner.png" property="og:image" /><meta content="@Cixelyn" name="twitter:site" /><meta content="1398782066" property="fb:admins" /><meta content="Cory's Notes" property="og:site_name" /><meta content="http://cory.li/battlecode-intro/" property="og:url" /><link href="http://cory.li/battlecode-intro/" rel="canonical" /><meta content="article" property="og:type" /><script>var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-37457623-1']);
+_gaq.push(['_trackPageview']);
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();</script></head><body><div class="row"><div id="header"></div></div><div class="row"><div class="span3"><div id="sidebar"><img src="/img/header.png" alt="header" /><div class="row"><div class="namebox"><h2 class="name"><a href="/">Cory Li</a></h2><div class="handle"><a href="https://twitter.com/cixelyn">@cixelyn</a></div></div></div><nav><ul class="unstyled nav nav-list"><li><a href="/about.html">About</a></li><li><a href="/">Posts</a></li><li><a href="/feed.xml">Feed</a></li><li><a href="http://code.cory.li">Code</a></li></ul></nav></div></div><div class="span9"><div id="content"><article><header><h1><a href="#">Battlecode: MIT's longest-running hardcore programming competition</a></h1><time datetime="2013-01-07T00:00:00-08:00">Written on Monday, January  7, 2013</time></header><p>As MIT&rsquo;s <a href="http://web.mit.edu/iap/">Independent Activities Period</a> draws near, I&rsquo;ve received quite a volume of inquiries from underclassmen about &ldquo;what should I take?&rdquo; or &ldquo;which of these competitions is better?&rdquo;</p>
+
+<p>It would be nice if I could point all future questions to a single place. So here are my thoughts on (read: pitch for) <a href="http://www.battlecode.org/info/">Battlecode</a> &ndash; MIT&rsquo;s longest-running and most badass programming competition.</p>
+
+<h3 id="what-is-it">What is it?</h3>
+
+<p>On a cold Boston January night on a dark stage in front of hundreds of cheering students, two teams will command massive armies and engage in deadly warfare &ndash; all within virtual reality. By this point, both teams will have worked tirelessly for four whole weeks to program and polish the best possible AI.</p>
+
+<p>The battlefield itself is rendered in 3D on the center screen of MIT&rsquo;s main auditorium, with two side screens providing a map overview as well as match statistics. The crowd cheers as the AIs are initialized and the two sides begin constructing robots, capturing objectives, and annihilating each other to the sound of lasers and explosions.</p>
+
+<p>Eventually one team will be violently eliminated in a display of tactical genius on the part of the other &ndash; the eliminated team was unable to design an effective counter in the last week leading up to the finals. Sadly, they walk off the stage, a little disheartened, but happy to have made it so far in the finals for their first time. For the remaining team, however, the dream of glory and thousands of dollars in cash prizes lives on.</p>
+
+<h3 id="overview">Overview</h3>
+
+<p>Battlecode is a programming competition (course number: 6.370), in which groups of up to four students program AIs to wage war in a Real-Time-Strategy game-like simulator.  For those of you who are unfamiliar with the competition, here&rsquo;s a small collection of matches from previous years:</p>
+
+<iframe width="640" height="360" src="http://www.youtube.com/embed/-3r69n6GJ1k
+" frameborder="0" allowfullscreen></iframe>
+
+<p>For a brief overview:</p>
+
+<ul>
+<li>Teams of MIT students submit code that will run on their team&rsquo;s robots within the simulator.</li>
+<li>The AIs are decentralized, meaning that robots do not share global information, and each robot must make its own decision based on the local environment and information nearby robots have radioed in.</li>
+<li>The game ends when one side captures the objective (changes from year to year), or eliminates the opposing enemy team.</li>
+</ul>
+
+<p>The finals are held in MIT&rsquo;s largest auditorium where hundreds of students gather to watch and cheer on as the two AIs duke it out live on stage, while the teams provide a running commentary on their design and strategy.  Winners have the chance to dip their toes in prize pools of $40k+, there&rsquo;s usually a ton of free food, and the whole spectacle is a ton of fun.</p>
+
+<p>(If that doesn&rsquo;t give you nerd chills, I don&rsquo;t know what will.)</p>
+
+<h3 id="why-should-i-care-about-battlecode">Why should I care about Battlecode?</h3>
+
+<p>If you&rsquo;re a coder, then no doubt there is some confusion as to the merits of the various competitions on campus as the number increases <a href="http://web.mit.edu/6.470/">every</a> <a href="http://mobileapps.mit.edu">single</a> <a href="http://iosgames.mit.edu/">year</a>.  Understandably, the web and mobile tracks have seen increased uptake, both due to the general startup craze, and in paraphrased words of fellow alumnuis <a href="http://twitter.com/cyen">@cyen</a>, working with web/mobile technologies represents &ldquo;real-world&rdquo; vocational training that some students feel they lack.</p>
+
+<p>While it&rsquo;s true that the AI you write for Battlecode is not going to be the next big webapp or the cool new business entered into MIT&rsquo;s <a href="http://www.mit100k.org/">$100k competition</a>, the experience of hacking on a difficult problem with short deadlines will definitely improve your technical chops &ndash; more-so probably than building a pretty CRUD app to win the web-app competition.</p>
+
+<p>From past winner Albert Ni:</p>
+
+<blockquote>
+<p>Battlecode is such a valuable experience because it&rsquo;s basically the one software engineering experience you have at MIT where you&rsquo;re forced to make a ton of tradeoff decisions, but the wrong choice in the wrong place can literally be the difference between victory and defeat. Surprisingly, to me Battlecode turned out to be excellent preparation for the startup world because there you also don&rsquo;t have enough time to get every last detail right and thus have to decide where to focus your limited energy, but focusing on the wrong things can doom your company.</p>
+</blockquote>
+
+<p>Ironically you don&rsquo;t actually get this engineering experience as much in the webapp or mobile app competitions. In both, contestants are expected to quickly cobble together a simple 30-day prototype, but the &ldquo;rubber never really meets the road&rdquo; as teams aren&rsquo;t judged on relevant tangible metrics (and therefore not under pressure to make do-or-die decisions) such as week-over-week growth rate or profits.</p>
+
+<p>As an example, in our team&rsquo;s bot, I can point to a single commit that was literally the difference between winning the whole competition and being a runner-up: this <strong><em>untested</em></strong> <a href="https://bitbucket.org/Cixelyn/bcode2012-bot/commits/4c171e0dd486d1f3e030796edac89dc75652ff8c">35 line hack</a> was made one hour before the submission deadline as a last ditch effort to counter the one team we knew we would lose to in the finals (on the last day we consistently lost to them in unranked scrimmage matches). There&rsquo;s nothing quite like standing on stage in front of hundreds of people hoping that your untested hack deploys correctly.</p>
+
+<p>No one writes bug-free (or even pretty) code in Battlecode, but contestants quickly learn how to avoid the catastrophic bugs that singlehandledly lose games.
+They learn to allocate time efficiently, quickly prototype new strategies, and test often (you can sit and theorycraft all you want, but at the end of the day, only wins on the scrimmage server and tournaments count). And all this is done working closely with two or three other classmates under immense time pressures &ndash; a recipe for long nights, heated arguments, and massive merge conflicts.</p>
+
+<p>These experiences and skills learned through Battlecode are hugely relevant in software engineering, startups, and life in general.</p>
+
+<h3 id="we-have-awesome-alumni-too">We have awesome alumni too!</h3>
+
+<p>If you&rsquo;re still not convinced that Battlecode is the best IAP competition, allow me to point you to its rich history of alumni who later went on to do some amazing things:</p>
+
+<ul>
+<li>David Greenspan and Aaron Iba, two of the original directors of battlecode cofound a AppJet together (acq. by Google for $10MM), which launched etherpad, still one of the downright most useful web apps I have ever used. Aaron later went on to become a partner at the well-known startup incubator <a href="http://ycombinator.com/">Y Combinator</a>.</li>
+<li>Drew Houston (top 8 battlecode finalist) and Arash Ferdowski (battlecode director) cofounded <a href="https://www.dropbox.com/">Dropbox</a> together. A significant percentage of Dropbox&rsquo;s core engineering team are all Battlecode alumns too including Albert Ni, KMod, Zviad M., and Steve Bartel.</li>
+</ul>
+
+<p>And if you&rsquo;re not a programmer at all, you should still come to watch the matches and listen to the teams discuss strategy. It&rsquo;s definitely a ton more exciting than watching an <a href="http://mitpokerbots.com/">animated excel graph of numbers</a>.</p>
+
+<h3 id="but-java-whine">But&hellip; JAVA (<em>whine</em>)</h3>
+
+<p>There seems to be an increasingly allergic reaction to Java in the hacker community for its verbosity, ceremony, and corporate stooginess (see this <a href="http://stackoverflow.com/questions/186964/java-core-api-anti-patterns-what-is-wrong/891589#891589">poem</a>).  The JVM-based nature of Battlecode has certainly drawn much criticism in this regard - especially when MIT&rsquo;s entire computer science curriculum is Python-based. Java&rsquo;s certainly not the coolest language these days.</p>
+
+<p>You quickly find, however, that the Java necessary to perform well in competition is nothing like anything you&rsquo;ve ever written before. The AI of every individual robot is encapsulated within it&rsquo;s own virtual execution environment, and the computational currency is not execution time, or even memory, but rather <a href="http://en.wikipedia.org/wiki/Java_bytecode"><em>JVM Bytecodes</em></a>.</p>
+
+<p><em>What? Bytecodes?</em> I can already hear some of you say. Hear me out &ndash; this strange limitation has some wonderful merits. Within these confines, contestants are forced to throw away everything they know about computer science and build their own data structures, their own architecture, and their own algorithms from scratch to deal with such constraints. It forces code to be lean; it forces contestants to be creative and continually innovate new heuristics that run in linear or sublinear time; most of all, these things all have to be self-discovered or invented, as there&rsquo;s no immediate book or guide to turn to.</p>
+
+<p>Being creative and arbitraging the bytecode counters is well within the spirit of the game, leading to some of the most remarkable hacks I&rsquo;ve ever seen. A small oversight in the specs counted <code>java.util.regex</code> as a fixed-cost. Team Little&rsquo;s <a href="http://assorted.sourceforge.net/battlecode-2007-little/">2007 entry</a> exploited this with an impressive <a href="http://assorted.svn.sourceforge.net/viewvc/assorted/battlecode-2007-little/trunk/teams/team022/RobotPlayer.java?revision=1843&amp;view=markup#lt">regular-expression encoding of dijkstra&rsquo;s algorithm</a>, allowing them to perform an O(nlogn) algorithm in just O(1) time.  The hole was patched the following year after Little won recognition for the clever hack. Never-the-less, the existing cat and mouse game between the constestants and the devs has lead to an ever-evolving game. For more examples, Steve Arcangeli has a very <a href="http://stevearc.blogspot.com/2011/12/code-snippits_17.html">detailed post</a> explaining some of the clever data structures they were able to exploit during the 2011 competition. </p>
+
+<p>Despite being severely bytecode-limited, you still have to program an AI for a game that is insanely <em>complex</em>.  Consider that not only do you have to write good heuristics for pathfinding and attack code, but you also need to <em>share</em> information between robots by broadcasting data packets (as each robot is its own autonomous entity). Thus, in addition to the actual attacking / firing of lasers, there is a second unseen battleground of information warfare. This leads to all sorts of shenanigans. In 2009, teams thought they were being clever by exploiting the fixed cost of <code>Arrays.hashCode()</code> to hash messages cheaply in O(1) time. But Greg Little went even one step further, looked up the OpenJDK hashCode implementation, and designed a messaging attack that mutated the contents of the array without changing the resulting hash. His bot was able to completely disrupt enemy communication, and in some cases, cause them to overload and stop moving via erroneous messages. Badass.</p>
+
+<p>So, despite the Java heritage, Battlecode still offers something for everyone &ndash; the hacker dreams up neat ways of executing computations within the confines of the engine; the computer scientist drafts the algorithm to compute on the platform; and the low-level performance engineer optimizes it to make it bytecode efficient.  All the past winners of battlecodes have been amazingly talented hackers that I seriously look up to and respect for their ability.</p>
+
+<h3 id="to-conclude">To conclude</h3>
+
+<p>Having participated 3 consecutive years in Battlecode, I can definitely say that, at least for me, it was the best use of my time during IAP. There&rsquo;s really nothing like four friends moving together into a single dorm room for one month with a bunch of monitors, a ton of ramen, and a battleplan for victory (In that sense, it&rsquo;s probably more &ldquo;startup-y&rdquo; than doing 6.470/6.570).  And despite being a competition, the top teams have always been amazingly generous, offering to share code secrets, tips, and techniques even when I was first a beginner just getting off the ground. Learning from and interacting with some of the best hackers MIT has to offer is quite a humbling experience.</p>
+
+<p>To any MIT students or prospectives considering Battlecode: find a few friends and dive in! You definitely won&rsquo;t regret it.</p>
+
+<h3 id="to-read-further">To read further</h3>
+
+<p>The brand new <a href="http://www.battlecode.org/contestants/releases/">2013 game spec</a> will be released January 7th late afternoon. Meanwhile you can check out the old <a href="https://s3.amazonaws.com/battlecode-releases-2012/docs/specs.html">2012 spec</a> to get a feel for the game details.</p>
+
+<p>In the spirit of Steve Arcangeli&rsquo;s <a href="http://stevearc.blogspot.com/2011/12/battlecode-postmortem-2011.html">postmortem</a> on the 2011 winning bot, my next few posts wil be on our 2012 experiences as well as tips, tricks, and techniques relevant to the current battlecode engine. We were fortunate enough to utilize a few of Team Gunface&rsquo;s tricks in the design of our own bot and would love to continue the tradition by writing up a few of our own. (By the way, if you&rsquo;re interested in participating in Battlecode, both of Steve&rsquo;s posts are required reading. One of the only resources out there that really details the thought process behind some of the design while also swapping old war stories).</p>
+
+<p>I&rsquo;m also going to kick the generousity up a notch and in addition to just writing up code snippets, with the permission of my teams, I&rsquo;ve also open sourced <em>all</em> of my previous battlecode bots.  In order, they are:</p>
+
+<table><thead>
+<tr>
+<th style="text-align: left">Year</th>
+<th style="text-align: left">ID</th>
+<th style="text-align: left">Team Name</th>
+<th style="text-align: left">Members</th>
+<th style="text-align: left">Repo</th>
+</tr>
+</thead><tbody>
+<tr>
+<td style="text-align: left">2010</td>
+<td style="text-align: left">#161</td>
+<td style="text-align: left">&ldquo;lazer guns pew pew&rdquo;</td>
+<td style="text-align: left">Stephen C., Cory L., Kevin L., Sajith W.</td>
+<td style="text-align: left"><a href="https://bitbucket.org/Cixelyn/bcode2010">Bitbucket</a></td>
+</tr>
+<tr>
+<td style="text-align: left">2011</td>
+<td style="text-align: left">#068</td>
+<td style="text-align: left">&ldquo;In the Rear with the Gear&rdquo;</td>
+<td style="text-align: left">Cory L. Max N. Justin V.</td>
+<td style="text-align: left"><a href="https://bitbucket.org/Cixelyn/battlecode2011">Bitbucket</a></td>
+</tr>
+<tr>
+<td style="text-align: left">2012</td>
+<td style="text-align: left">#047</td>
+<td style="text-align: left">&ldquo;fun gamers&rdquo;</td>
+<td style="text-align: left">Yanping C., Cory L., Haitao M., Justin V.</td>
+<td style="text-align: left"><a href="https://bitbucket.org/Cixelyn/bcode2012-bot">Bitbucket</a></td>
+</tr>
+</tbody></table>
+
+<p>Feel free to browse through the code, though the commenting density is somewhat inconsistent, and a lot of last-minute changes are undocumented and/or inconsistent with the provided documentation. Also, don&rsquo;t read through the commit log if you&rsquo;re easily offended. </p>
+
+<p>Lastly, if you&rsquo;re interested in sponsoring future battlecode competitions, check out their <a href="http://www.battlecode.org/sponsors/interested/">sponsorship info</a>.</p>
+
+<p><strong><em>Edit: Check out comments from past competitors and devs on the <a href="http://news.ycombinator.com/item?id=5022167">Hacker News thread</a></em></strong></p>
+</article><hr /><div id="footer"><a href="/" class="back">&larr; back</a><div id="tags">Tagged: <a href="/tags/battlecode/">#battlecode</a>, <a href="/tags/coding/">#coding</a>, <a href="/tags/mit/">#mit</a></div></div></div></div></div></body></html>

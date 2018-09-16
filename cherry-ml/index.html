@@ -1,0 +1,68 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8" /><meta content="yes" name="apple-mobile-web-app-capable" /><meta content="minimum-scale=1.0, width=device-width, maximum-scale=1, user-scalable=no" name="viewport" /><script src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML" async="true"></script><script src="/javascripts/jquery-1.8.2.min.js"></script><script src="/javascripts/bootstrap.min.js"></script><link href="/stylesheets/bootstrap.min.css" rel="stylesheet" /><link href="/stylesheets/bootstrap-responsive.min.css" rel="stylesheet" /><link href="/stylesheets/syntax.css" rel="stylesheet" /><link href="/stylesheets/style.css" rel="stylesheet" /><link href="/favicon.ico" rel="icon" type="image/ico" /><title>Keyboard Science with Cherry MLs</title><meta content="Keyboard Science with Cherry MLs" property="og:title" /><meta content="Cherry ML measurements, dimensions, CAD models and other notes." name="description" /><meta content="Cherry ML measurements, dimensions, CAD models and other notes." property="og:description" /><meta content="summary_large_image" name="twitter:card" /><meta content="http://cory.li/cherry-ml/keycap-off.jpg" property="og:image" /><meta content="@Cixelyn" name="twitter:site" /><meta content="1398782066" property="fb:admins" /><meta content="Cory's Notes" property="og:site_name" /><meta content="http://cory.li/cherry-ml/" property="og:url" /><link href="http://cory.li/cherry-ml/" rel="canonical" /><meta content="article" property="og:type" /><script>var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-37457623-1']);
+_gaq.push(['_trackPageview']);
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();</script></head><body><div class="row"><div id="header"></div></div><div class="row"><div class="span3"><div id="sidebar"><img src="/img/header.png" alt="header" /><div class="row"><div class="namebox"><h2 class="name"><a href="/">Cory Li</a></h2><div class="handle"><a href="https://twitter.com/cixelyn">@cixelyn</a></div></div></div><nav><ul class="unstyled nav nav-list"><li><a href="/about.html">About</a></li><li><a href="/">Posts</a></li><li><a href="/feed.xml">Feed</a></li><li><a href="http://code.cory.li">Code</a></li></ul></nav></div></div><div class="span9"><div id="content"><article><header><h1><a href="#">Keyboard Science with Cherry MLs</a></h1><time datetime="2016-05-11T16:00:00-07:00">Written on Wednesday, May 11, 2016</time></header><p>I was recently inspired by a post / rallying call to &ldquo;<a href="http://coffeecoder.net/blog/blog-little-things/">blog little things</a>.&rdquo; So after failing to find detailed information on the Cherry ML pushbutton switch, I&rsquo;ve decided to publish all my measurement notes in the hopes that it will be helpful to someone else.</p>
+
+<h2 id="the-switch">The Switch</h2>
+
+<p>With mechanical keyboards being all the rage, most enthusiasts are familiar with the <a href="http://cherryamericas.com/product/mx-series/">Cherry MX series</a> of pushbutton switches. Less known, however, is <a href="http://cherryamericas.com/product/ml-series/">Cherry&rsquo;s ML series</a> of low-profile switches, meant for laptops or other space-constrained designs. At 6.9mm total board height, it&rsquo;s less than half the height of a 15.6mm MX switch.</p>
+
+<p><img class="img-polaroid" alt="Cherry MX and ML side-by-side" src="comparison.jpg" /></p>
+
+<ul>
+<li><strong>Travel Distance</strong>: 3mm</li>
+<li><strong>Force</strong>: 45 cN</li>
+<li><strong>Bounce Time</strong>: 5ms</li>
+<li><strong>Current Rating</strong>: 10mA</li>
+</ul>
+
+<p>The ML switch is technically a &ldquo;family&rdquo; of switches, but there&rsquo;s really only one ML part readily available, the ML1A-11JW. Fortunately, this variant is <a href="https://octopart.com/ml1a-11jw-cherry-916514">widely available in single quantities</a>, making it decent for hobbyist use.</p>
+
+<p>The best description I&rsquo;ve heard for the tactile &ldquo;feel&rdquo; of an ML switch is that it&rsquo;s like a Cherry MX Blue, but &ldquo;scratchier.&rdquo; While preference for a particular switch is mostly dependent on the eye of the beholder, I think these switches feel great in my application: a fully mechanical controller (if you&rsquo;re interested, follow me on <a href="https://twitter.com/cixelyn">twitter</a> for updates!)</p>
+
+<p>Unfortunately, Cherry&rsquo;s <a href="http://cherryamericas.com/wp-content/uploads/2014/12/ml_cat.pdf">official datasheets</a> are frustratingly bare and underannotated, especially in regards to mechanical features, which makes it difficult to use in designs. I will try to elucidate some of the missing information below.</p>
+
+<h2 id="schematic">Schematic</h2>
+
+<p><img src="/cherry-ml/footprint.svg" alt="Cherry ML Footprint" /></p>
+
+<p>The J in the part number stands for <strong>J</strong>umper, meaning that two of the pins are just shorts to each other. However, it isn&rsquo;t clear on exactly which ones they are out of the four. I&rsquo;ve redrawn the footprint with an actual schematic symbol to make it clear that pins 2 and 4 are the actual switch, while 1 and 3 serve as a jumper wire.</p>
+
+<h2 id="mechanical-dimensions">Mechanical Dimensions</h2>
+
+<p><img src="/cherry-ml/drawing.svg" alt="Cherry ML mechanical drawing/dimensions" /></p>
+
+<p>While the MX series has the mounting post on the switch, the ML switch instead has slots that the keycaps insert into. The exact dimensions and spacing of the hole are unclear, so I have filled them out here. These are the dimensions to the best of my knowledge (and the tolerance of my calipers).</p>
+
+<p>The actuator is directly centered over the bottom mounting post, with two 3.1mm x 1.1mm slots separated 5.3mm apart. It is important to note that the large bottom mounting post is <em>not</em> in the center of the switch; it&rsquo;s only 5mm down the edge of the full 11.4mm length. I&rsquo;ve exported a very blocky <a href="/cherry-ml/ML1A-11JWv1.step">3D STEP file</a> out for visualization use while working in your favorite EDA package.</p>
+
+<h2 id="keycap-test">Keycap Test</h2>
+
+<p>To check my measurements, I designed a small button cap with 3 x 1mm mounting posts as a test.</p>
+
+<p><img src="/cherry-ml/keycap.svg" alt="Cherry ML round button keycap design" /></p>
+
+<p>The button yielded a reasonable fit after printing it out on an SLA 3D-printer. </p>
+
+<p><img class="img-polaroid" alt="Cherry ML with 3D printed keycap" src="keycap-off.jpg" /></p>
+
+<p>It may be possible to increase the size of the mounting post a bit to make the fit tighter, but so far I&rsquo;m pretty happy with how it turned out.</p>
+
+<p><img class="img-polaroid" alt="Cherry ML with 3D printed keycap" src="keycap-on.jpg" /></p>
+
+<h2 id="final-thoughts">Final Thoughts</h2>
+
+<p>I&rsquo;ll try to make this a &ldquo;living&rdquo; blog post in that I&rsquo;ll periodically update it with more accurate measurements and models as I make them &ndash; feel free to check back for the latest information. At some point I plan to take the keycap apart and optically scan and measure each piece, but for now the above is sufficient for my purposes.</p>
+
+<p>Also, if there&rsquo;s anyone out there with better measurements or models, please feel free to reach out to me either through <a href="https://twitter.com/cixelyn">twitter</a> or <a href="mailto:s@cory.li">email</a> so I can correct my drawings!</p>
+
+<h2 id="changelog">Changelog</h2>
+
+<ul>
+<li><strong>5/11/2016</strong>: Initial Posting</li>
+</ul>
+</article><hr /><div id="footer"><a href="/" class="back">&larr; back</a><div id="tags">Tagged: <a href="/tags/hardware/">#hardware</a></div></div></div></div></div></body></html>

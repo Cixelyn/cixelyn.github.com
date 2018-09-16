@@ -1,7 +1,6 @@
 @import "http://fonts.googleapis.com/css?family=Lato:400,400italic,700,700italic";
 @import "http://fonts.googleapis.com/css?family=Arvo:400";
 @import "http://fonts.googleapis.com/css?family=Source+Code+Pro:400,700";
-/* line 5, /Users/coryli/Code/coryli_site/source/stylesheets/style.css.sass */
 body {
   font-family: "Lato", sans-serif;
   font-size: 17px;
@@ -9,50 +8,40 @@ body {
   line-height: 27px;
   color: #666; }
 
-/* line 13, /Users/coryli/Code/coryli_site/source/stylesheets/style.css.sass */
 h1, h2, h3, h4, h5, h6 {
   font-family: "Arvo", serif;
   line-height: 60px;
   font-weight: normal;
   color: #333; }
 
-/* line 19, /Users/coryli/Code/coryli_site/source/stylesheets/style.css.sass */
 h4 {
   font-size: 22px; }
 
-/* line 22, /Users/coryli/Code/coryli_site/source/stylesheets/style.css.sass */
 p, li, blockquote p {
   font-size: 19px;
   font-weight: 400;
   line-height: 1.6; }
 
-/* line 27, /Users/coryli/Code/coryli_site/source/stylesheets/style.css.sass */
 strong {
   color: #444; }
 
-/* line 30, /Users/coryli/Code/coryli_site/source/stylesheets/style.css.sass */
 blockquote {
   border-left: 5px solid #bbb; }
-  /* line 33, /Users/coryli/Code/coryli_site/source/stylesheets/style.css.sass */
   blockquote p {
     font-style: italic;
     color: #777; }
 
-/* line 37, /Users/coryli/Code/coryli_site/source/stylesheets/style.css.sass */
 code, pre {
   font-family: "Source Code Pro", monospace; }
 
-/* line 41, /Users/coryli/Code/coryli_site/source/stylesheets/style.css.sass */
 code {
   color: #333; }
 
-/* line 44, /Users/coryli/Code/coryli_site/source/stylesheets/style.css.sass */
 td > code {
   border: none;
   background-color: transparent;
   font-size: 13px; }
 
-/* line 50, /Users/coryli/Code/coryli_site/source/stylesheets/style.css.sass */
 pre {
   border: solid 1px #ddd;
   background: #fff;
@@ -64,19 +53,18 @@ pre {
   word-break: inherit;
   word-wrap: inherit; }
 
-/* line 61, /Users/coryli/Code/coryli_site/source/stylesheets/style.css.sass */
+.rouge-table pre {
+  border: none !important; }
+
 video {
   width: 100%; }
 
-/* line 64, /Users/coryli/Code/coryli_site/source/stylesheets/style.css.sass */
 .highlight td {
   padding: 8px 15px; }
 
-/* line 67, /Users/coryli/Code/coryli_site/source/stylesheets/style.css.sass */
 .gutter {
   text-align: right; }
 
-/* line 70, /Users/coryli/Code/coryli_site/source/stylesheets/style.css.sass */
 .gl {
   background: #fafafa;
   border-right: 1px solid #ddd;
@@ -89,28 +77,22 @@ video {
   -ms-user-select: none;
   user-select: none; }
 
-/* line 84, /Users/coryli/Code/coryli_site/source/stylesheets/style.css.sass */
 article img {
   padding-top: 1em;
   padding-bottom: 1em; }
 
-/* line 90, /Users/coryli/Code/coryli_site/source/stylesheets/style.css.sass */
 article > table, li > table {
   width: 100%;
   margin-bottom: 20px; }
-  /* line 94, /Users/coryli/Code/coryli_site/source/stylesheets/style.css.sass */
   article > table th, article > table td, li > table th, li > table td {
     padding: 8px;
     line-height: 20px;
     vertical-align: top;
     border-top: 1px solid #dddddd; }
-  /* line 100, /Users/coryli/Code/coryli_site/source/stylesheets/style.css.sass */
   article > table th, li > table th {
     font-weight: bold; }
-  /* line 103, /Users/coryli/Code/coryli_site/source/stylesheets/style.css.sass */
   article > table thead th, li > table thead th {
     vertical-align: bottom; }
-  /* line 106, /Users/coryli/Code/coryli_site/source/stylesheets/style.css.sass */
   article > table caption + thead tr:first-child th,
   article > table caption + thead tr:first-child td,
   article > table colgroup + thead tr:first-child th,
@@ -123,73 +105,56 @@ article > table, li > table {
   li > table thead:first-child tr:first-child th,
   li > table thead:first-child tr:first-child td {
     border-top: 0; }
-  /* line 114, /Users/coryli/Code/coryli_site/source/stylesheets/style.css.sass */
   article > table tbody + tbody, li > table tbody + tbody {
     border-top: 2px solid #dddddd; }
-  /* line 118, /Users/coryli/Code/coryli_site/source/stylesheets/style.css.sass */
   article > table tbody tr:nth-child(odd) td,
   article > table tbody tr:nth-child(odd) th, li > table tbody tr:nth-child(odd) td,
   li > table tbody tr:nth-child(odd) th {
     background-color: #f9f9f9; }
-  /* line 123, /Users/coryli/Code/coryli_site/source/stylesheets/style.css.sass */
   article > table tbody tr:hover td,
   article > table tbody tr:hover th, li > table tbody tr:hover td,
   li > table tbody tr:hover th {
     background-color: #fce1ec; }
 
-/* line 128, /Users/coryli/Code/coryli_site/source/stylesheets/style.css.sass */
 #header {
   margin-bottom: 30px;
   background-color: #fa2573;
   height: 2px;
   width: 100%; }
 
-/* line 135, /Users/coryli/Code/coryli_site/source/stylesheets/style.css.sass */
 #content {
   padding-bottom: 150px; }
-  /* line 137, /Users/coryli/Code/coryli_site/source/stylesheets/style.css.sass */
   #content header {
     margin-bottom: 30px; }
-    /* line 139, /Users/coryli/Code/coryli_site/source/stylesheets/style.css.sass */
     #content header h1 {
       margin: 0; }
-    /* line 141, /Users/coryli/Code/coryli_site/source/stylesheets/style.css.sass */
     #content header a {
       color: #333; }
-    /* line 143, /Users/coryli/Code/coryli_site/source/stylesheets/style.css.sass */
     #content header date {
       font-size: 16px; }
-  /* line 145, /Users/coryli/Code/coryli_site/source/stylesheets/style.css.sass */
   #content h2 {
     margin-top: 1em; }
-  /* line 148, /Users/coryli/Code/coryli_site/source/stylesheets/style.css.sass */
   #content hr {
     margin: 30px 0;
     border-top: 1px solid #ccc; }
-  /* line 152, /Users/coryli/Code/coryli_site/source/stylesheets/style.css.sass */
   #content iframe {
     margin: 1.5em 0; }
-  /* line 155, /Users/coryli/Code/coryli_site/source/stylesheets/style.css.sass */
   #content .row.post {
     border-bottom: 1px solid #C8C8C8; }
 
-/* line 159, /Users/coryli/Code/coryli_site/source/stylesheets/style.css.sass */
 #sidebar {
   padding-top: 20px;
   padding-bottom: 20px;
   padding-left: 3em;
   padding-right: 1em;
   text-align: right; }
-  /* line 166, /Users/coryli/Code/coryli_site/source/stylesheets/style.css.sass */
   #sidebar h2.name {
     margin-bottom: 0;
     white-space: nowrap;
     line-height: normal; }
-  /* line 170, /Users/coryli/Code/coryli_site/source/stylesheets/style.css.sass */
   #sidebar .namebox {
     margin-bottom: 1.5em; }
 
-/* line 174, /Users/coryli/Code/coryli_site/source/stylesheets/style.css.sass */
 #footer a.back {
   line-height: 20px;
   float: left;
@@ -200,25 +165,20 @@ article > table, li > table {
   -webkit-border-radius: 15px;
   -moz-border-radius: 15px;
   border-radius: 15px; }
-  /* line 185, /Users/coryli/Code/coryli_site/source/stylesheets/style.css.sass */
   #footer a.back:hover {
     background-color: whiteSmoke;
     text-decoration: none; }
-/* line 189, /Users/coryli/Code/coryli_site/source/stylesheets/style.css.sass */
 #footer #tags {
   text-align: right; }
 
-/* line 192, /Users/coryli/Code/coryli_site/source/stylesheets/style.css.sass */
 .center {
   text-align: center; }
 
 @media (max-width: 767px) {
-  /* line 196, /Users/coryli/Code/coryli_site/source/stylesheets/style.css.sass */
   #sidebar {
     overflow: auto;
     width: 100%;
     padding-left: 0;
     padding-top: 0; }
-    /* line 202, /Users/coryli/Code/coryli_site/source/stylesheets/style.css.sass */
     #sidebar img {
       float: right; } }

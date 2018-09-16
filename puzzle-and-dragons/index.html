@@ -1,0 +1,239 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8" /><meta content="yes" name="apple-mobile-web-app-capable" /><meta content="minimum-scale=1.0, width=device-width, maximum-scale=1, user-scalable=no" name="viewport" /><script src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML" async="true"></script><script src="/javascripts/jquery-1.8.2.min.js"></script><script src="/javascripts/bootstrap.min.js"></script><link href="/stylesheets/bootstrap.min.css" rel="stylesheet" /><link href="/stylesheets/bootstrap-responsive.min.css" rel="stylesheet" /><link href="/stylesheets/syntax.css" rel="stylesheet" /><link href="/stylesheets/style.css" rel="stylesheet" /><link href="/favicon.ico" rel="icon" type="image/ico" /><title>Fun with solving puzzles (and dragons)</title><meta content="Fun with solving puzzles (and dragons)" property="og:title" /><meta content="Cory's thoughts on Puzzles and Dragons after 500 days played, both on game design and hacking" name="description" /><meta content="Cory's thoughts on Puzzles and Dragons after 500 days played, both on game design and hacking" property="og:description" /><meta content="summary_large_image" name="twitter:card" /><meta content="http://cory.li/puzzle-and-dragons/packing.png" property="og:image" /><meta content="@Cixelyn" name="twitter:site" /><meta content="1398782066" property="fb:admins" /><meta content="Cory's Notes" property="og:site_name" /><meta content="http://cory.li/puzzle-and-dragons/" property="og:url" /><link href="http://cory.li/puzzle-and-dragons/" rel="canonical" /><meta content="article" property="og:type" /><script>var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-37457623-1']);
+_gaq.push(['_trackPageview']);
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();</script></head><body><div class="row"><div id="header"></div></div><div class="row"><div class="span3"><div id="sidebar"><img src="/img/header.png" alt="header" /><div class="row"><div class="namebox"><h2 class="name"><a href="/">Cory Li</a></h2><div class="handle"><a href="https://twitter.com/cixelyn">@cixelyn</a></div></div></div><nav><ul class="unstyled nav nav-list"><li><a href="/about.html">About</a></li><li><a href="/">Posts</a></li><li><a href="/feed.xml">Feed</a></li><li><a href="http://code.cory.li">Code</a></li></ul></nav></div></div><div class="span9"><div id="content"><article><header><h1><a href="#">Fun with solving puzzles (and dragons)</a></h1><time datetime="2016-03-26T15:00:00-07:00">Written on Saturday, March 26, 2016</time></header><p>From the end of 2012 to early 2014, I found myself enchanted (read: entrapped) by the mobile game known as Puzzles and Dragons.  A deceptively simple and charming game, this post is a collection of my musings on the gameplay and design. It&rsquo;s also some closure for myself so that I can finally say that I have &ldquo;beaten&rdquo; the game and put it to rest.</p>
+
+<p>Anyways, there are really four separate posts contained within this mind dump, feel free to skip to the parts of interest to you:</p>
+
+<ol>
+<li><a href="#core-gameplay">Introduction to PAD and gameplay overview</a></li>
+<li><a href="#solvable-gameplay">Some PAD maths and algorithms</a></li>
+<li><a href="#complete-computer-control">PAD hacking/automation</a></li>
+<li><a href="#design-thoughts">Thoughts on PAD&rsquo;s game design</a></li>
+</ol>
+
+<h2 id="core-gameplay">Core Gameplay</h2>
+
+<p>Puzzles and Dragon (or PAD for short) is a match-three puzzler from the Japanese studio GungHo entertainment. Featuring Pokemon-like collection and progression elements, it ranks among one of the most profitable apps in the world. It still pulls in around <a href="http://venturebeat.com/2013/05/13/puzzle-dragons-is-making-3-75m-a-day/">3 million dollars <em>daily</em></a> and was the first mobile app ever to hit <a href="http://www.pocketgamer.biz/asia/news/57076/its-official-puzzle-and-dragons-is-the-first-mobile-game-to-1-billion-in-revenue/">$1 billion dollars in revenue</a>.<sup id="fnref1"><a href="#fn1">1</a></sup></p>
+
+<p>The goal of the game is very simple: Eliminate 3 or more orbs in a row.</p>
+
+<video autoplay loop muted style="max-width:350px;" >
+  <source src="overview.mp4" type="video/mp4">
+  <source src="overview.webm" type="video/webm">
+  Your browser doesn&rsquo;t support HTML5 video tag.
+</video>
+
+<p>Matched combos on the bottom half of the game board build attack power which you use to launch attacks against cute enemy monsters shown on the top half.</p>
+
+<p>But notice that there is a subtle difference in game design which sets PAD apart from other match-threes, like Candy Crush or Bejeweled. Instead of your typical swap-two-elements, a single piece in PAD can be moved an arbitrary length, displacing other pieces as it travels.</p>
+
+<p>The ingenuity in this design is that it&rsquo;s actually a strict <em>superset</em> of Bejeweled&rsquo;s gameplay. It makes the game incredibly beginner-friendly, since you can still play in a very simplistic swap-two manner:</p>
+
+<video autoplay loop muted style="max-width:400px" >
+  <source src="simple.mp4" type="video/mp4">
+  <source src="simple.webm" type="video/webm">
+  Your browser doesn&rsquo;t support HTML5 video tag.
+</video>
+
+<p>But the more you play, the more it becomes clear that the skill ceiling is actually incredibly high, as the player learns to massage the board into their desired configuration with lengthy combos:</p>
+
+<video autoplay loop muted style="max-width:400px" >
+  <source src="combo.mp4" type="video/mp4">
+  <source src="combo.webm" type="video/webm">
+  Your browser doesn&rsquo;t support HTML5 video tag.
+</video>
+
+<p>With this simple core mechanic, PAD is able to create one of the best gameplay skill-progression tracks I have seen in any mobile game. Without the need for preprogrammed experience bars or player buff handouts, there is still an invisible but very prominent feeling of &ldquo;leveling-up&rdquo;. The player gains new advanced techniques, combo setups, and become more dexterous at manipulating the orbs all on their own.</p>
+
+<p>And most impressive of all, this invisible progress track guides the player all the way from being a casual bejeweled player to tackling PAD&rsquo;s version of ruthless World of Warcraft-like endgame raiding.</p>
+
+<p>As an example, study the following hypothetical 4x3 board:</p>
+
+<p><img class="img-polaroid" title="Ta-da!" alt="hypothetic four-color 4x3 board" width="400px" src="cutout.png" /></p>
+
+<p>A beginner might go for one of the two easy double-combos:</p>
+
+<p><img class="img-polaroid" title="And similarly for the left side" alt="Path for a single combo on the right side" width="400px" src="cutout-path1.png" /></p>
+
+<p>A more experienced player should immediately see the path for the full four vertical combo:</p>
+
+<p><img class="img-polaroid" title="Magic!" alt="Path for four vertical combos" width="400px" src="cutout-path2.png" /></p>
+
+<p><a href="http://pad.dawnglare.com/?s=iahWBP0">Try it for yourself</a> if you&rsquo;re having trouble understanding the path. And of course these pattern identifications are much more impressive when in context of the full 5x6 board.</p>
+
+<p><img class="img-polaroid" title="Do the above moves and you still have an easy purple and blue setup too. Hearts for the extra ambitious." alt="Path for double combo" width="400px" src="cutout-full.png" /></p>
+
+<p>This incredibly high skill ceiling actually makes PAD quite entertaining to watch, as skill is so visibly demonstrable. If you don&rsquo;t believe me, check out one of my favorite <a href="https://www.youtube.com/watch?v=ESkW2D_1nrk">PAD videos</a>, or even watch some of the official <a href="https://youtu.be/347dVAcjA9A?t=2160">AppBank streams</a>. A spectator may mentally plan out her own solution, only to be enlightened when a master player steps up to move the orbs. To the untrained eye, it look as if orbs are being magically expelled from the board under a ruthless finger with machine-like precision<sup id="fnref2"><a href="#fn2">2</a></sup>.</p>
+
+<h2 id="solvable-gameplay">Solvable Gameplay</h2>
+
+<p>So after one dropped orb too many, it occured to me that I should just program the computer to play PAD for me.</p>
+
+<p>The way orb manipulation works makes it very similar to the classic <a href="https://en.wikipedia.org/wiki/15_puzzle">15-puzzle</a>, in which you slide around numbered tiles in a grid to rearrange them into numerical order.</p>
+
+<p><img src="/puzzle-and-dragons/15-puzzle.svg" title="These things were designed to shut me up as a little kid during long road trips" alt="15 Puzzle" /></p>
+
+<p>Roughly speaking, PAD is an MxN generalization of 15-Puzzle. The only difference is that in PAD there is no explicit &ldquo;hole,&rdquo; the hole is instead the tile that you are currently dragging under your finger.</p>
+
+<p>Using this as a bit of scaffolding, we can break the plan of attack for &ldquo;solving&rdquo; PAD into 2 parts: calculate the board with the maximal score, and then calculate the shortest path to get from our current state to our desired state.</p>
+
+<p>An easy way to produce the maximal scoring board is to sort all the orbs by color, and then pack groups of three starting from the bottom<sup id="fnref3"><a href="#fn3">3</a></sup>.</p>
+
+<p><img class="img-polaroid" title="Fortunately for us, this isn't the full bin packing problem" alt="Packing groups of three starting from the bottom" width="400px" src="packing.png" /></p>
+
+<p>With some handwaving, you can show you can do no better than this configuration (i.e. breaking up a group to produce a falling combo does not increase your total combo count, so there is no advantage to not packing tight adjacent groups of threes). Note of course that this doesn&rsquo;t take into account the mechanic of <em>skyfalls</em>, that is, the additional combos scored serendiptiously from orbs refilling the board. To maximize this, you&rsquo;ll want to simultaniously pack in the largest number of <em>cascades</em>.  </p>
+
+<p><img class="img-polaroid" title="Unfortunately for us, packing in this style is a bit harder. This example has a total of 4 cascades." alt="Packing cascades starting from the bottom" width="400px" src="cascades.png" /></p>
+
+<p>Because the game refills orbs from the top each time it clears away a matched combo, having this <em>cascade</em> of combos means that the falling orbs are permuted several times on the way down for a statistically higher chance of matches.</p>
+
+<p>A tricky question is whether we can actually get to this desired configuration. Going back to our scaffolding, consider the fact that in 15-puzzle not every board state is actually reachable! There&rsquo;s a neat little theorem showing that any move in 15-puzzle preserves the parity of inversions<sup id="fnref4"><a href="#fn4">4</a></sup> &ndash; that is, the number of times a higher-numbered tile precedes a lower-numbered tile. This fact partitions the space of possible board states into two disconnected graphs: those of even parity and those of odd parity. From any board, you can reach every other board of the same parity, but never one of the other parity! This is why if you physically pull out and swap two consecutive pieces on a 15-puzzle board, the puzzle is no longer solvable.</p>
+
+<p>Unlike 15-puzzle where there are 15 unique pieces however, there are only 7 unique orb colors in PAD (if you also count poison as a color). Every board therefore must have a duplicate orb somewhere, and the existence of that duplicate means you can always swap the two duplicates to &ldquo;change&rdquo; the parity without actually changing the state of the board. Therefore, we can show that in PAD, <em>it is possible to achieve any desired board state</em> &ndash; the only limitation is your skill (and time to manipulate the orbs).</p>
+
+<p>So, given that we know the reachable maximal-scoring board, we just need to write a solver to get there!</p>
+
+<p>Turns out this is somewhat challenging, as finding the shortest solution for 15-puzzle is NP-hard. Likewise, while figuring out the highest scoring board in PAD is reasonably easy, finding the shortest path to achieve the highest-scoring board in the alloted time is non-trivial. </p>
+
+<p>Fortunately for us, we can really only do so many moves in the alloted four seconds, so a non-exhaustive depth-first search is &ldquo;good enough&rdquo; for all intents and purposes. <a href="http://kennytm.github.io/pndopt/pndopt.html">Pndopt</a> is one such app<sup id="fnref5"><a href="#fn5">5</a></sup>, which lets you weight certain colors for any given situation. Like a lot of F2P games these days, the game time-gates you on the number of plays you can do in a day, so for players who are running hard dungeons, it is not unusual to input every move through pndopt to maximize chances of success &ndash; something of which I am quite guilty.</p>
+
+<p>To PAD&rsquo;s credit, using a computer to solve the puzzles surprisingly doesn&rsquo;t ruin everything &ndash; it just removes the puzzler cornerstone and transforms the game into more of a RPG team management simulation. </p>
+
+<h2 id="complete-computer-control">Complete Computer Control</h2>
+
+<p>Given that most people are using computer solvers, why not just have the computer play the game entirely? Back when I was still <del>addicted</del> playing, I hacked up a <a href="https://github.com/Cixelyn/pndsolver">proof of concept solver &amp; runner</a> and threw it up on github just for myself. </p>
+
+<p><img class="img-polaroid" title="This is where I developed my love/hate relationship with angular.js" alt="pndsolver web interface" src="pndsolver.png" /></p>
+
+<p>Here&rsquo;s how it all works:</p>
+
+<ol>
+<li> Screen capture is accomplished with <code>idevicescreenshot</code> on iOS and <code>adb screencap</code> on android.</li>
+<li>Once the image is on the computer, the location of the 6x5 grid is calculated from the screenshot aspect ratio and then divided into 30 individual images.</li>
+<li>The average hue of the individual image determines the color.</li>
+<li>SIFT is run against a grayscale version of the image to give a list of key points, which is then matched against a list of possible orb modifiers (e.g. the plus modifiers, which give a 1.05x bonus to matches)</li>
+<li>Candidate combo paths are obtained via an extremely lazy DFS written in python, which runs a &ldquo;multicore&rdquo; solver by spawning a bunch of <code>pypy</code> instances for different regions of the board.</li>
+<li>Solutions with a score above a certain threshold are presented to the user along with the required path. The user can then sort through the solutions by relevant parameters such as damage done or health healed.</li>
+<li>On android only, the chosen path can then be executed on the device via android&rsquo;s <code>monkeyrunner</code> tool. (I wasn&rsquo;t able to figure out a way to programmatically simulate touches on iOS).</li>
+</ol>
+
+<h3 id="straight-up-cheating">Straight Up Cheating</h3>
+
+<p>Of course, this is an absurd amount of work just to play a game that is entirely client-side. Turns out PAD mothership doesn&rsquo;t even care about the state of the game. Sniffing the traffic shows that there are only a total of three requests made per dungeon:</p>
+
+<ol>
+<li><code>sneak_dungeon</code> - Client makes this request in order to enter a dungeon. Server responds with dungeon encounters and loot table in response.</li>
+<li><code>sneak_dungeon_ack</code> - Client responds that the dungeon layout has been received and that the player is now playing. This is done in case of connectivity issues.</li>
+<li><code>clear_dungeon</code> - Client responds that the dungeon is cleared. Server acknowledges, confirms the received loot, and updates the player&rsquo;s account.</li>
+</ol>
+
+<p>Note that what most people could call the &ldquo;core game&rdquo; is actually <em>entirely clientside</em>. This includes the board state, monster attacks, monster damage, player health, etc. The entirety of the player&rsquo;s efforts is boiled down to either a single http request &ndash; a success request nets them the entire loot table, while a failure request leaves them with nothing.</p>
+
+<p>One nice/convenient aspect of this design is that you can actually &ldquo;queue&rdquo; dungeons before losing connectivity. I&rsquo;d often load a dungeon before entering the subway, play through it during my 10 minute commute downtown, then re-sync once I surfaced at the destination station.</p>
+
+<p>Some other fun notes from packet sniffing:</p>
+
+<ul>
+<li>PAD to me is the best testament of the &ldquo;just ship it&rdquo; mentality as it appears the whole thing was written in PHP (i.e. the request is made to <code>sneak_dungeon.php</code>), showing that a fancy stack isn&rsquo;t necessary to build a billion dollar game.</li>
+<li>The API endpoint to enter the dungeon <code>sneak_dungeon</code> is probably an amusing mistranslation of sorts - probably originally along the lines of &ldquo;to enter the dungeon discretely / carefully&rdquo;</li>
+<li>Somewhere around the 5.X series patches, they started encrypting the JSON payload so that it wasn&rsquo;t easily over-the-wire sniff-able. Clever players were checking the loot-table ahead of time to determine whether a dungeon was even worth running. It&rsquo;s now sent as a encoded binary base64 blob &ndash; seems like a fun and reasonably straight-forward reverse engineering project for someone&rsquo;s weekend.</li>
+<li>Monsters are actually referred to as <code>cards</code> in all the API calls. Maybe early prototypes of the games were meant to feel more like a collectible-card game?</li>
+</ul>
+
+<h2 id="design-thoughts">Design Thoughts</h2>
+
+<p>If you&rsquo;re willing to ignore how easy it is to cheat and just play the game as it&rsquo;s meant to be played, it&rsquo;s actually quite an enjoyable experience. There are a lot of minor annoyances in PAD, but I think that they designed two high-level mechanics down quite well:</p>
+
+<h3 id="resource-management">Resource Management</h3>
+
+<p>I&rsquo;m not sure if the monster fusion mechanic was invented by PAD, but I find it to be a very clever bit of design. The basic gist is this: monsters are the primary form of &ldquo;currency&rdquo; in PAD.</p>
+
+<ul>
+<li>You use teams of monsters to clear dungeons</li>
+<li>Clearing dungeons sometimes rewards you with additional monsters</li>
+<li>Excess monsters can be used as a source of experience points for other monsters by &ldquo;feeding&rdquo; them</li>
+</ul>
+
+<p>Often, you&rsquo;ll want to save the strongest monsters or put them on your team while feeding the weaker ones away. When feeding, feeding five fodder monsters at a time is slightly more efficient than feeding one at a time. So overall, the player is encouraged to hoard monsters.</p>
+
+<p>Even getting duplicate monsters is exciting as fusing duplicates together not only provides experience, but also levels up the monster&rsquo;s powerful &ldquo;active skill&rdquo;.<sup id="fnref6"><a href="#fn6">6</a></sup></p>
+
+<p>Countering the natural hoarding tendency is the concept of &ldquo;Box Space,&rdquo; or the total number of monsters you&rsquo;re allowed to hoard at a time. Exceeding the allocated box space prevents the player from being able to enter new dungeons, forcing them to make decisions about consolidating powerful creatures together, <em>or</em> spending IAP purchases on box space expansions.</p>
+
+<p>I find this single monster resource system to be quite elegant<sup id="fnref7"><a href="#fn7">7</a></sup>, as it both simplifies the number of resources in the game, but also provides interesting decisions that players can think about in the downtime between dungeons: given a limited amount of box space, which monsters should I keep, and which ones should I feed away for experience?</p>
+
+<h3 id="raiding">Raiding</h3>
+
+<p>Another mechanic I really like a lot is PAD&rsquo;s treatment of the end-game.</p>
+
+<p>The designers were either really clever, or got really lucky, in their design of the limited-time event system. In the game, there is a list of unique &ldquo;special dungeons&rdquo; called &ldquo;descends&rdquo; which rotates every 24 hours. Each special dungeon guarantees the drop of a unique monster only if you are able to clear it on the hardest difficulty. <em>However</em>, specific special dungeons only come around about once a month. So if you want a particular monster, you have to train your team and plan to be ready by the dungeon date.</p>
+
+<p>The whole preparation and timing feels very much like &ldquo;gearing up&rdquo; for a raid, as is common in other MMOs. Players will often only have two to three shots at the dungeon due to the time-gating, so they will often spend the days leading up to the descend training their monsters, reading up on the boss mechanics, and browsing the community to find friends with monsters who can help tackle the level<sup id="fnref8"><a href="#fn8">8</a></sup>.</p>
+
+<p>Due to the power spike granted by the newly acquired monsters from beating the descend, there&rsquo;s also a natural progress of descends, just as there is often a natural raiding progression in MMOs. Often, the first real descend new players tackle is <a href="http://puzzledragonx.com/en/mission.asp?m=810">Hera</a>,<sup id="fnref9"><a href="#fn9">9</a></sup> which provides an ability called Gravity, dealing an unconditional 30% damage to enemy monsters. Using Hera, they work their way through harder and harder stages, like Valkyrie, Goemon, eventually building a team that can tackle Zeus, Satan, and the other end-game descends.</p>
+
+<p>This feeling of end-game progression complements the skill progression well, making me unsurprised that the game is still doing well after four years.</p>
+
+<h2 id="closing">Closing</h2>
+
+<p>Anyways with over 500 days logged into the game, I think it&rsquo;s time to put this to rest. Here&rsquo;s a screenshot of my core team. </p>
+
+<p><a href="team.png"><img title="800 box space later..." alt="Cory's PAD Team" src="team_small.png" style="max-width:320px" /></a>
+<a href="karin.png"><img title="I'll miss you Karin!" alt="Karin Seiryuu" src="karin_small.png" style="max-width:320px" /></a></p>
+
+<p>Farewell Karin!</p>
+
+<p><img alt="Uninstalling..." src="uninstall.png" style="max-width:100px" /></p>
+
+<p><br></p>
+
+<p><em>I recently started using twitter more, feel free to follow me <a href="http://twitter.com/cixelyn">@cixelyn</a> if you enjoy my writing. Also, special thanks to Ruwen Liu, Haitao Mao, Sam Powers, and YP Chen for reading drafts of this post.</em></p>
+
+<div class="footnotes">
+<hr>
+<ol>
+
+<li id="fn1">
+<p>And as a self-congratulatory note, I am proud to say that I managed to spend less than $100 on IAP, making this one of the best time/money sources of entertainment I have ever played. Pyrrhic victory I suppose.&nbsp;<a href="#fnref1">&#8617;</a></p>
+</li>
+
+<li id="fn2">
+<p>To be completely fair, there is a part of PAD that can be quite inscrutable to uninitiated viewers: intentional board stalling. The idea is that the player does not actually want to trigger a big combo because it would prematurely advance them to the next part of the level before all their special abilities are charged. So they make a calculated (and often short) move that makes only a single match, while still manipulating the overall board layout to trigger a big combo later.&nbsp;<a href="#fnref2">&#8617;</a></p>
+</li>
+
+<li id="fn3">
+<p>This is of course for the very basic case where you have a rainbow colored team which each member of equal power. The analysis is much more nuanced if you care about a non-uniform team (i.e. you&rsquo;re stuck with an integer linear programming problem). For those that care, the basic damage formula is <span>$$ (1+\frac{combos-1}{4}) \cdot \sum_{n=0}^{combos} \mathrm{attack}(n)\cdot(1 +\frac{orbs(n)-3}{4}) $$</span>where combos is the total number of combos, attack(n) is the total monster attack power of combo<sub>n</sub>, and orbs(n) is the total number of orbs in combo<sub>n</sub>. Throw in board modifiers, monster multipliers, and a whole host of other powerups, and the calculation becomes really messy.&nbsp;<a href="#fnref3">&#8617;</a></p>
+</li>
+
+<li id="fn4">
+<p>For the general MxN puzzle, any transposition will preserve the invariant N mod 2, where N is the number of inversions plus the row number of the empty square. For a more thorough treatment, see the excellent resource at <a href="http://www.cut-the-knot.org/pythagoras/fifteen.shtml">Interactive Mathematics Miscellany and Puzzles</a>.&nbsp;<a href="#fnref4">&#8617;</a></p>
+</li>
+
+<li id="fn5">
+<p>If you do use Pndopt, I find their default <code>MAX_SOLUTIONS_COUNT</code> a bit too low. Open the console and bump the variable to something reasonable like 20,000.&nbsp;<a href="#fnref5">&#8617;</a></p>
+</li>
+
+<li id="fn6">
+<p>Each monster may have up to one <em>active skill</em>, which is a player-activated ability that provides some sort of positive benefit during battles. &ldquo;Orb Changers&rdquo; are the most sought-after active skill as they typically convert all orbs of one color to another, serving as play-makers for difficult board situations. Leveling up a skill reduces the skill&rsquo;s cooldown timer, allowing the player to use it more frequently in battle.&nbsp;<a href="#fnref6">&#8617;</a></p>
+</li>
+
+<li id="fn7">
+<p>To be completely fair, PAD actually has a secondary resource called &ldquo;gold&rdquo; which I find quite inelegant. Except very early on in the game, you never run out of gold, making it a non-resource. I think the designers realized this mistake and started adding gold sinks in the form of purchasable dungeons around the 6.0 patch.&nbsp;<a href="#fnref7">&#8617;</a></p>
+</li>
+
+<li id="fn8">
+<p>When battling a dungeon, you provide one leader and four team members. You also have the option of using a friend&rsquo;s monster, who serves as the team&rsquo;s second leader. Leader monsters give huge team buffs, so having a roster of strong friends is paramount to fielding an overall strong team. Many higher-level players will often lend their monsters to beginners during the big descend days. Common places to look for specific friends include <a href="http://reddit.com/r/puzzleanddragons">/r/puzzleanddragons</a> and puzzledragonx&rsquo;s <a href="http://puzzledragonx.com/en/friendfinder.asp">friend finder</a>.&nbsp;<a href="#fnref8">&#8617;</a></p>
+</li>
+
+<li id="fn9">
+<p>I know this isn&rsquo;t entirely the case as Hera was bumped to a normal dungeon now, but it was true throughout over half of PAD&rsquo;s life and the entirety of my PAD career.&nbsp;<a href="#fnref9">&#8617;</a></p>
+</li>
+
+</ol>
+</div>
+</article><hr /><div id="footer"><a href="/" class="back">&larr; back</a><div id="tags">Tagged: <a href="/tags/gamedev/">#gamedev</a>, <a href="/tags/coding/">#coding</a></div></div></div></div></div></body></html>
