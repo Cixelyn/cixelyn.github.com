@@ -5,7 +5,7 @@
   <id>http://cory.li/feed.xml</id>
   <link href="http://cory.li"/>
   <link href="http://cory.li/feed.xml" rel="self"/>
-  <updated>2016-05-11T19:00:00-04:00</updated>
+  <updated>2016-05-11T16:00:00-07:00</updated>
   <author>
     <name>Cory Li</name>
   </author>
@@ -13,8 +13,8 @@
     <title>Keyboard Science with Cherry MLs</title>
     <link rel="alternate" href="/cherry-ml/"/>
     <id>/cherry-ml/</id>
-    <published>2016-05-11T19:00:00-04:00</published>
-    <updated>2016-05-11T19:00:00-04:00</updated>
+    <published>2016-05-11T16:00:00-07:00</published>
+    <updated>2016-05-11T16:00:00-07:00</updated>
     <author>
       <name>Cory Li</name>
     </author>
@@ -85,8 +85,8 @@
     <title>Fun with solving puzzles (and dragons)</title>
     <link rel="alternate" href="/puzzle-and-dragons/"/>
     <id>/puzzle-and-dragons/</id>
-    <published>2016-03-26T18:00:00-04:00</published>
-    <updated>2016-03-26T18:00:00-04:00</updated>
+    <published>2016-03-26T15:00:00-07:00</published>
+    <updated>2016-03-26T15:00:00-07:00</updated>
     <author>
       <name>Cory Li</name>
     </author>
@@ -328,8 +328,8 @@
     <title>Java bytecode hacking for fun and profit</title>
     <link rel="alternate" href="/bytecode-hacking/"/>
     <id>/bytecode-hacking/</id>
-    <published>2014-01-06T15:59:00-05:00</published>
-    <updated>2014-01-06T15:59:00-05:00</updated>
+    <published>2014-01-06T12:59:00-08:00</published>
+    <updated>2014-01-06T12:59:00-08:00</updated>
     <author>
       <name>Cory Li</name>
     </author>
@@ -992,8 +992,8 @@ ifge          5
     <title>Battlecode: MIT's longest-running hardcore programming competition</title>
     <link rel="alternate" href="/battlecode-intro/"/>
     <id>/battlecode-intro/</id>
-    <published>2013-01-07T03:00:00-05:00</published>
-    <updated>2013-01-07T03:00:00-05:00</updated>
+    <published>2013-01-07T00:00:00-08:00</published>
+    <updated>2013-01-07T00:00:00-08:00</updated>
     <author>
       <name>Cory Li</name>
     </author>
